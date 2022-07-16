@@ -2,7 +2,7 @@ module UsersHelper
     # DOCU: Validate new user information
     # Triggered by: multiple models
     # Requires: params
-    # Returns: {status, result{params}, error}
+    # Returns: { status, result{params}, error }
     # Last updated at: July 16, 2022
     # Owner: Adrian
     def validate_new_user_info(params)
@@ -40,3 +40,17 @@ module UsersHelper
 
         return response_data
     end
+
+    # DOCU: Set user session
+    # Triggered by: UusersController
+    # Requires: user_data - id, first_name, last_name, email
+    # Returns: { status, result{params}, error }
+    # Last updated at: July 16, 2022
+    # Owner: Adrian
+    def set_user_session(user_data)
+        session[:user_id]    = user_data[:id]
+        session[:first_name] = user_data[:first_name]
+        session[:last_name]  = user_data[:last_name]
+        session[:email]      = user_data[:email]
+    end
+end
