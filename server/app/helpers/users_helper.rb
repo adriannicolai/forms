@@ -23,9 +23,7 @@ module UsersHelper
                 end
 
                 if validation_key === :email
-                    response_data[:result][:email] = "User already Exists" if User.get_user_record({ :fields_to_filter => { :email => value } })[:status]
-                    # Downcase the email
-                    value = value.downcase
+                    response_data[:result][:email] = "User already Exists" if User.get_user_record({ :fields_to_filter => { :email => value.downcase } })[:status]
                 end
 
                 next if validations[validation_key].nil?
@@ -42,4 +40,3 @@ module UsersHelper
 
         return response_data
     end
-end
