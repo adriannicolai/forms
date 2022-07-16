@@ -1,0 +1,9 @@
+<form action="/user/create_user" method="POST" id="register_user_form">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+    <input type="text" name="first_name" />
+    <input type="text" name="last_name" />
+    <input type="text" name="email" />
+    <input type="text" name="password" />
+    <input type="text" name="confirm_password" />
+    <input type="submit" value="Register" />
+</form>
