@@ -1,5 +1,6 @@
 include ApplicationHelper
 include UsersHelper
+include QueryHelper
 class User < ApplicationRecord
     # DOCU: Method to insert candidate for newly created users invited for interview
     # Triggered by UsersController#create_user
@@ -33,4 +34,38 @@ class User < ApplicationRecord
 
         return response_data
     end
+
+    private
+        # DOCU: Method to insert candidate for newly created users invited for interview
+        # Triggered by UsersController#create_user
+        # Requires:  params - fields_to_select
+        # Optionals: params - fields_to_filter
+        # Returns: { status: true/false, result: { user_details }, error }
+        # Last updated at: July 16, 2022
+        # Owner: Adrian
+        def self.get_user_record(params)
+            response_data = { :status => false, :result => {}, :error => nil }
+
+            begin
+                params[:fields_to_select] ||= "0"
+
+                select_user_query = ["SELECT #{ActiveRecord::Base.sanitize_sql(params[:fields_to_select])} FROM users
+                #{ ' WHERE'if params[:fields_to_filter].present?}"]
+
+                # Add to the where clause
+                if params[:fields_to_filter].present?
+                    params[:fields_to_filter].each_with_index do |(field, value), index|
+                        select_user_query[0] += "#{' AND' if index > 1} #{field} #{field.is_a?(Array) ? 'IN(?)' : '= ?'}"
+                        select_user_query << value
+                    end
+                end
+
+                testing_value = query_record(select_user_query)
+
+            rescue Exception => ex
+                response_data[:error] = ex.message
+            end
+
+            return response_data
+        end
 end
