@@ -1,8 +1,20 @@
 Rails.application.routes.draw do
-	# Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+	# DOCU: Route for users
+    # Triggered by: /user...
+    # Last updated at: July 16, 2022
+    # Owner: Adrian
 	scope "/user" do
 		post "/create_user" => "users#create_user"
 	end
-	# Defines the root path route ("/")
+
+	# DOCU: Route for forms
+    # Triggered by: /user...
+    # Last updated at: July 16, 2022
+    # Owner: Adrian
+	scope "/forms" do
+		get "/" => "forms#home_page"
+	end
+
+	# Root URL
 	root "forms#landing_page"
 end
