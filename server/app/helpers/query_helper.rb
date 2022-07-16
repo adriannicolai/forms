@@ -22,7 +22,7 @@ module QueryHelper
             ActiveRecord::Base.send(:sanitize_sql_array, sql_statement)
         ).to_hash
     end
-    
+
     # DOCU: Insert records to the database
     # Triggered by: Queries from different models
     # Requires: sql_statement - INSERT
