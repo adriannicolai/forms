@@ -20,7 +20,17 @@ class User < ApplicationRecord
                 validate_user_details = validate_new_user_info(check_user_params[:result])
 
                 if validate_user_details[:status]
+                    create_new_user = insert_record(["
+                        INSERT INTO users (first_name, last_name, email, password, created_at, updated_at)
+                        VALUES (?, ?, ?, ?, NOW(), NOW())
+                    ", check_user_params[:result][:first_name], check_user_params[:result][:last_name], check_user_params[:result][:email], encrypt_password(check_user_params[:result][:password])])
 
+                    if create_new_user.present?
+                        response_data[:status] = true
+                        response_data[:result] = self.get_user_record({ :fields_to_filter => { :id => create_new_user }})[:result]
+                    else
+                        response_data[:error] = "Something went wrong with creating a new user, Please try again later"
+                    end
                 else
                     response_data.merge!(validate_user_details)
                 end
@@ -47,7 +57,7 @@ class User < ApplicationRecord
             response_data = { :status => false, :result => {}, :error => nil }
 
             begin
-                params[:fields_to_select] ||= "0"
+                params[:fields_to_select] ||= "*"
 
                 select_user_query = ["SELECT #{ActiveRecord::Base.sanitize_sql(params[:fields_to_select])} FROM users
                 #{ ' WHERE'if params[:fields_to_filter].present?}"]
@@ -60,8 +70,9 @@ class User < ApplicationRecord
                     end
                 end
 
-                testing_value = query_record(select_user_query)
+                user_details = query_record(select_user_query)
 
+                response_data.merge!(user_details.present? ? { :status => true, :result => user_details } : { :error => "User not found" })
             rescue Exception => ex
                 response_data[:error] = ex.message
             end
