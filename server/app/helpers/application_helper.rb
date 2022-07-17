@@ -31,9 +31,9 @@ module ApplicationHelper
     # DOCU: Function to encrypt password
     # Triggered by UserModel
     # Requires: password
-    # Last updated at: July 16, 2022
+    # Last updated at: July 17, 2022
     # Owner: Adrian
     def encrypt_password(password)
-        Digest::MD5.hexdigest("secured#{password}password")
+        Digest::MD5.hexdigest("#{ENV["PASSWORD_PREFIX"]}#{password}password#{ENV["PASSWORD_SUFFIX"]}")
     end
 end
