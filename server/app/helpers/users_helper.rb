@@ -1,4 +1,5 @@
 include EmailHelper
+
 module UsersHelper
     # DOCU: Validate new user information
     # Triggered by: multiple models

@@ -1,6 +1,7 @@
 include ApplicationHelper
 include UsersHelper
 include QueryHelper
+
 class User < ApplicationRecord
     # DOCU: Method to insert candidate for newly created users invited for interview
     # Triggered by UsersController#create_user

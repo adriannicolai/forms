@@ -1,3 +1,5 @@
+include UsersHelper
+
 class UsersController < ApplicationController
 	# DOCU: Process adding of company and role, and adding/updating company_cand_preferences record
 	# Triggered by (POST) /user/create_user
@@ -10,6 +12,10 @@ class UsersController < ApplicationController
 
 		begin
 			create_new_user = User.create_user(params)
+
+			if create_new_user[:status]
+				puts create_new_user
+			end
 		rescue Exception => ex
 			response_data[:error] = ex.message
 		end
