@@ -49,4 +49,14 @@ class UsersController < ApplicationController
 
 	def update_user
 	end
+
+	# DOCU: Reset session and redirect to landing page
+	# Triggered by (GET) /users/logout
+	# Last udpated at: July 17, 2022
+	# Owner: Adrian
+	def logout
+		reset_session
+
+		redirect_to "/"
+	end
 end

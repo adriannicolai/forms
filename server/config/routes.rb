@@ -16,6 +16,9 @@ Rails.application.routes.draw do
 		get "/" => "forms#home_page"
 	end
 
+	# root logout
+	get "logout" => "users#logout"
+
 	# Root URL
 	root "forms#landing_page"
 end
