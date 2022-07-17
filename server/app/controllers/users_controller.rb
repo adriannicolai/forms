@@ -13,14 +13,15 @@ class UsersController < ApplicationController
 		begin
 			create_new_user = User.create_user(params)
 
-			if create_new_user[:status]
-				puts create_new_user
-			end
+			# Set the new user session if the creation of new user is successful
+			set_user_session(create_new_user[:result].symbolize_keys) if create_new_user[:status]
+
+			response_data.merge!(create_new_user)
 		rescue Exception => ex
 			response_data[:error] = ex.message
 		end
 
-		return response_data
+		render :json => response_data
 	end
 
 	def update_user
