@@ -51,7 +51,7 @@ class UsersController < ApplicationController
 	end
 
 	# DOCU: Reset session and redirect to landing page
-	# Triggered by (GET) /users/logout
+	# Triggered by (GET) /logout
 	# Last udpated at: July 17, 2022
 	# Owner: Adrian
 	def logout
