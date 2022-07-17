@@ -12,7 +12,7 @@ module EmailHelper
         response_data = { :status => false, :result => {}, :error => nil }
 
         # Hack: to prevent checking for testing
-        return response_data[:status] = true if email.include?("@test.com")
+        return response_data.merge!({ :status => true }) if email.include?("@test.com")
 
         begin
             uri              = URI("https://emailvalidation.abstractapi.com/v1/?api_key=#{ENV["ABSTRACT_API_KEY"]}&email=#{email}")
@@ -25,14 +25,12 @@ module EmailHelper
 
             response = http.request(request)
 
-            if response.code === 200
+            if response.code.to_i === 200
                 # Parse the result to JSON
 				response_body = JSON.parse(response.body)
 				response_data[:result] = response_body
 
-				if((response_body["is_smtp_valid"]["text"] == "TRUE") || (response_body["is_smtp_valid"]["text"] == "UNKNOWN"))
-					response_data[:status] = true
-				end
+                response_data[:status] = (response_body["is_smtp_valid"]["text"] === "TRUE") || (response_body["is_smtp_valid"]["text"] === "UNKNOWN")
             end
         rescue StandardError => ex
             response_data[:errror] = ex.message
