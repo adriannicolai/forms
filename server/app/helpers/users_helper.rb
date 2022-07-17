@@ -44,7 +44,6 @@ module UsersHelper
         rescue Exception => ex
             response_data[:error] = ex.message
         end
-        p response_data
 
         return response_data
     end
