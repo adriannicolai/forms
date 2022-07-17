@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     # Owner: Adrian
 	scope "/user" do
 		post "/create_user" => "users#create_user"
+		post "login"		=> "users#login"
 	end
 
 	# DOCU: Route for forms
