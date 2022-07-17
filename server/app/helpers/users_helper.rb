@@ -1,3 +1,4 @@
+include EmailHelper
 module UsersHelper
     # DOCU: Validate new user information
     # Triggered by: multiple models
@@ -22,8 +23,14 @@ module UsersHelper
                     response_data[:result][:password] = "Passwords do not match" if params[:password] != params[:confirm_password]
                 end
 
+                # Validate the email address, firrst step is check the email pattern
+                # Next step is validate the email using abstract api
                 if validation_key === :email
                     response_data[:result][:email] = "User already Exists" if User.get_user_record({ :fields_to_filter => { :email => value.downcase } })[:status]
+
+                    if response_data[:result][:email].nil?
+                        response_data[:result][:email] = "Please enter a valid email" if !check_valid_email(value)[:status]
+                    end
                 end
 
                 next if validations[validation_key].nil?
@@ -33,10 +40,11 @@ module UsersHelper
                 response_data[:result][validation_key] = validations[validation_key][:error] if validation_key === :name ? !validation_comparison.nil? : validation_comparison.nil?
             end
 
-            response_data[:status] = !response_data[:result].present?
+            response_data[:status] = response_data[:result].empty?
         rescue Exception => ex
             response_data[:error] = ex.message
         end
+        p response_data
 
         return response_data
     end
