@@ -24,6 +24,29 @@ class UsersController < ApplicationController
 		render :json => response_data
 	end
 
+	# DOCU: Process user login
+	# Triggered by (POST) /user/login
+	# Requires: params - first_name, last_name, email, password, confirm_password
+	# Returns: { status: true/false, result: { user_details }, error }
+	# Last udpated at: July 11, 2022
+	# Owner: Adrian
+	def login
+		response_data = { :status => false, :result => {}, :error => nil }
+
+		begin
+			process_user_signin = User.login_user(params)
+
+			# Update the user session
+			set_user_session(process_user_signin[:result].symbolize_keys) if process_user_signin[:status]
+
+			response_data.merge!(process_user_signin)
+		rescue Exception => ex
+			response_data[:error] = ex.message
+		end
+
+		render :json => response_data
+	end
+
 	def update_user
 	end
 end
