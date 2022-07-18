@@ -4,7 +4,21 @@ class FormsController < ApplicationController
 	def landing_page
 	end
 
+    # DOCU: home page for forms
+    # Triggered by: (GET) /forms
+    # Last updated at: July 18, 2022
+    # Owner: Adrian
 	def home_page
+
+	end
+
+	# DOCU: home page for forms
+    # Triggered by: (POST) /forms/get_forms
+    # Returns: { status: true/false, result: { forms_data }, error }
+    # Last updated at: July 18, 2022
+    # Owner: Adrian
+	def get_forms
+
 	end
 
 	private
