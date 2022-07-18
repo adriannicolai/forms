@@ -10,7 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_11_130807) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_17_115640) do
+  create_table "form_questions", charset: "utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "form_id", null: false
+    t.text "question_json"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_id"], name: "index_form_questions_on_form_id"
+    t.index ["user_id"], name: "index_form_questions_on_user_id"
+  end
+
+  create_table "form_sections", charset: "utf8", force: :cascade do |t|
+    t.bigint "form_id", null: false
+    t.text "forn_question_ids"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_id"], name: "index_form_sections_on_form_id"
+  end
+
+  create_table "forms", charset: "utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title", limit: 150
+    t.string "description", limit: 500
+    t.text "form_settings_json"
+    t.integer "cache_response_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_forms_on_user_id"
+  end
+
   create_table "users", charset: "utf8", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -20,4 +49,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_11_130807) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "form_questions", "forms"
+  add_foreign_key "form_questions", "users"
+  add_foreign_key "form_sections", "forms"
+  add_foreign_key "forms", "users"
 end
