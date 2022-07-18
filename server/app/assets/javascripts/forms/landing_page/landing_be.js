@@ -7,7 +7,7 @@ $(document).ready(function(){
 /**
 * DOCU: This function is for submitting the register user form<br>
 * Triggered: .on("submit", "#register_user_form", submitRegisterUserForm)<br>
-* Last Updated Date: July 17, 2022
+* Last Updated Date: July 18, 2022
 * @author Adrian
 */
 function submitRegisterUserForm(e){
@@ -15,21 +15,29 @@ function submitRegisterUserForm(e){
 
     let registerUserForm = $(this);
 
-    $.post(registerUserForm.attr("action"), registerUserForm.serialize(), function(register_form_response){
-        if(register_form_response.status){
-            window.location.href = "/forms";
-        }
-        else{
-            /* TODO: add error handling here */
-            alert("error");
-        }
-    });
+    /* Prevent user from spam clicking the register button */
+    if(parseInt(registerUserForm.data("is_processing")) === BOOLEAN_FIELD.no){
+        registerUserForm.data("is_processing", BOOLEAN_FIELD.yes);
+
+        $.post(registerUserForm.attr("action"), registerUserForm.serialize(), function(register_form_response){
+            console.log(register_form_response);
+            if(register_form_response.status){
+                window.location.href = "/forms";
+            }
+            else{
+                /* TODO: add error handling here */
+                alert("error");
+            }
+
+            registerUserForm.data("is_processing", BOOLEAN_FIELD.no);
+        });
+    }
 }
 
 /**
 * DOCU: This function is for submitting the login user form<br>
 * Triggered: .on("submit", "#login_user_form", submitLoginUserForm)<br>
-* Last Updated Date: July 17, 2022
+* Last Updated Date: July 18, 2022
 * @author Adrian
 */
 function submitLoginUserForm(e){
@@ -37,13 +45,20 @@ function submitLoginUserForm(e){
 
     let loginUserForm = $(this);
 
-    $.post(loginUserForm.attr("action"), loginUserForm.serialize(), function(register_form_response){
-        if(register_form_response.status){
-            window.location.href = "/forms";
-        }
-        else{
-            /* TODO: add error handling here */
-            alert("error");
-        }
-    });
+    /* Prevent user from spam clicking the login button */
+    if(parseInt(loginUserForm.data("is_processing")) === BOOLEAN_FIELD.no){
+        loginUserForm.data("is_processing", BOOLEAN_FIELD.yes);
+
+        $.post(loginUserForm.attr("action"), loginUserForm.serialize(), function(register_form_response){
+            if(register_form_response.status){
+                window.location.href = "/forms";
+            }
+            else{
+                /* TODO: add error handling here */
+                alert("error");
+            }
+
+            loginUserForm.data("is_processing", BOOLEAN_FIELD.no);
+        });
+    }
 }
