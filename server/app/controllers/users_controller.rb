@@ -2,7 +2,7 @@ include UsersHelper
 
 class UsersController < ApplicationController
 	# DOCU: Process adding of company and role, and adding/updating company_cand_preferences record
-	# Triggered by (POST) /user/create_user
+	# Triggered by: (POST) /user/create_user
 	# Requires: params - first_name, last_name, email, password, confirm_password
 	# Returns: { status: true/false, result: { user_details }, error }
 	# Last udpated at: July 11, 2022
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
 	end
 
 	# DOCU: Process user login
-	# Triggered by (POST) /user/login
+	# Triggered by: (POST) /user/login
 	# Requires: params - first_name, last_name, email, password, confirm_password
 	# Returns: { status: true/false, result: { user_details }, error }
 	# Last udpated at: July 11, 2022
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
 	end
 
 	# DOCU: Reset session and redirect to landing page
-	# Triggered by (GET) /logout
+	# Triggered by: (GET) /logout
 	# Last udpated at: July 17, 2022
 	# Owner: Adrian
 	def logout
