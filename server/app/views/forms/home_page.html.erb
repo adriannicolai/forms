@@ -1,5 +1,16 @@
 <input type="text" placeholder="Search" id="search_text_box">
 
+<select name="form_sort_order" id="form_sort_order">
+    <option value="title">Title</option>
+    <option value="date_created">Date Created</option>
+</select>
+
+<select name="form_number_of_page" id="form_number_of_page">
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+</select>
+
 <form action="/forms/get_forms" method="POST" data-is_processing="0" id="get_all_forms">
     <input type="hidden" name="auuthenticity_token" value="<%= form_authenticity_token %>" />
 </form>
