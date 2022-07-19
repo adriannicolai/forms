@@ -21,9 +21,10 @@ class Form < ApplicationRecord
                 ", check_new_form_params[:result][:user_id], DEFAULT_FORM_SETTING])
 
                 if create_form.present?
-
+                    response_data[:status] = true
+                    response_data[:result] = self.find_form_record({:fields_to_filter => { :id => create_form }})
                 else
-
+                    response_data[:error]  = "Error creating form record, Please try again later"
                 end
             else
                 response_data.merge!(check_new_form_params)
@@ -36,4 +37,35 @@ class Form < ApplicationRecord
         return response_data
     end
 
+    private
+        # DOCU: Method to fetch a single form record
+        # Triggered by Forms
+        # Requires: params - fields_to_select, fields_to_filter
+        # Returns: { status: true/false, result: { form_details }, error }
+        # Last updated at: July 20, 2022
+        # Owner: Adrian
+        def self.find_form_record(params)
+            response_data = { :status => false, :result => {}, :error => nil }
+
+            begin
+                params[:fields_to_select] ||= "*"
+
+                select_form_query = ["SELECT #{ActiveRecord::Base.sanitize_sql(params[:fields_to_select])} FROM
+                    forms WHERE
+                "]
+
+                params[:fields_to_filter].each_with_index do |(field, value), index|
+                    select_form_query[0] += " #{ 'AND' if index > 0} #{field} = ?"
+                    select_form_query << value
+                end
+
+                form_details = query_record(select_form_query)
+
+                response_data.merge!(form_details.present? ? { :status => true, :result => form_details } : { :error => "Form not found" } )
+            rescue Exception => ex
+                response_data[:error] = ex.message
+            end
+
+            return response_data
+        end
 end
