@@ -1,6 +1,6 @@
 module ApplicationHelper
     # DOCU: Function to check required and optional fields
-    # Triggered by UsersController
+    # Triggered by: UsersController
     # Requires: required_fields - [], optional_fields - []
     # Last updated at: July 16, 2022
     # Owner: Adrian
@@ -29,11 +29,27 @@ module ApplicationHelper
     end
 
     # DOCU: Function to encrypt password
-    # Triggered by UserModel
+    # Triggered: by UserModel
     # Requires: password
     # Last updated at: July 17, 2022
     # Owner: Adrian
     def encrypt_password(password)
         Digest::MD5.hexdigest("#{ENV["PASSWORD_PREFIX"]}#{password}password#{ENV["PASSWORD_SUFFIX"]}")
+    end
+
+    # DOCU: Function to redirect user to 404 page
+    # Triggered by: UsersController, FormsController
+    # Last updated at: July 20, 2022
+    # Owner: Adrian
+    def redirect_to_404
+        redirect_to "/404.html"
+    end
+
+    # DOCU: Function to redirect user to 500 page
+    # Triggered by: UsersController, FormsController
+    # Last updated at: July 20, 2022
+    # Owner: Adrian
+    def redirect_to_500
+        redirect_to "/500.html"
     end
 end
