@@ -13,8 +13,9 @@ Rails.application.routes.draw do
     # Last updated at: July 16, 2022
     # Owner: Adrian
 	scope "/forms" do
-		get "/" 		 => "forms#home_page"
-		post "get_forms" => "forms#get_forms"
+		get "/" 		   => "forms#home_page"
+		post "get_forms"   => "forms#get_forms"
+		post "create_form" => "forms#create_form"
 	end
 
 	# root logout
