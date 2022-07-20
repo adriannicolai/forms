@@ -6,7 +6,7 @@ class Form < ApplicationRecord
     # Triggered by FormsController#create_form
 	# Requires: params - user_id
     # Returns: { status: true/false, result: { form_details }, error }
-    # Last updated at: July 19, 2022
+    # Last updated at: July 21, 2022
     # Owner: Adrian
     def self.create_form(params)
         response_data = { :status => false, :result => {}, :error => nil }
@@ -15,14 +15,16 @@ class Form < ApplicationRecord
             check_new_form_params = check_fields(["user_id"], [], params)
 
             if check_new_form_params[:status]
+                # Create a new forms record
                 create_form = insert_record(["
                     INSERT INTO forms (user_id, form_settings_json, cache_response_count, created_at, updated_at)
                     VALUES (?, ?, 0, NOW(), NOW())
                 ", check_new_form_params[:result][:user_id], DEFAULT_FORM_SETTING])
 
+                # return the en
                 if create_form.present?
-                    response_data[:status] = true
-                    response_data[:result] = self.get_form_record({:fields_to_filter => { :id => create_form }})
+                    response_data[:status]      = true
+                    response_data[:result][:id] = encrypt(create_form)
                 else
                     response_data[:error]  = "Error creating form record, Please try again later"
                 end
@@ -108,9 +110,6 @@ class Form < ApplicationRecord
         # Last updated at: July 20, 2022
         # Owner: Adrian
         def self.format_page_order_settings(params)
-            response_data = { :status => false, :result => {}, :error => nil }
-
-            begin
                 page_order = case params[:sort_by]
                 when "Title ASC"
                     "ORDER BY title ASC"
@@ -126,12 +125,7 @@ class Form < ApplicationRecord
                     "ORDER BY id DESC"
                 end
 
-                response_data.merge!({ :status => true, :result => page_order })
-            rescue Exception => ex
-                response_data[:error] = ex.message
-            end
-
-            return response_data
+            return page_order
         end
 
         # DOCU: Method to set the query settings for join statements
@@ -140,12 +134,9 @@ class Form < ApplicationRecord
         # Last updated at: July 20, 2022
         # Owner: Adrian
         def self.format_page_join_settings(params)
-            response_data = { :status => false, :result => {}, :error => nil }
+            join_query = ""
 
-            begin
-
-            rescue Exception => ex
-                response_data[:error] = ex.message
+            if params[:join_settings][:form_section].present?
             end
 
             return response_data
