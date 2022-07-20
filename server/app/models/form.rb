@@ -82,6 +82,7 @@ class Form < ApplicationRecord
                 params[:fields_to_select] ||= "*"
 
                 select_form_query = ["SELECT #{ActiveRecord::Base.sanitize_sql(params[:fields_to_select])} FROM
+
                     forms WHERE
                 "]
 
@@ -100,16 +101,48 @@ class Form < ApplicationRecord
             return response_data
         end
 
-        # DOCU: Method to set query setings such as sort order, limit for pagination settings
+        # DOCU: Method to set the query settings for order by
         # Triggered by Forms
         # Returns: { status: true/false, result: { query_settings }, error }
         # Last updated at: July 20, 2022
         # Owner: Adrian
-        def self.format_get_form_query_settings
+        def self.format_page_order_settings(params)
             response_data = { :status => false, :result => {}, :error => nil }
 
             begin
+                page_order = case params[:sort_by]
+                when "Title ASC"
+                    "ORDER BY title ASC"
+                when "Title DESC"
+                    "ORDER BY title DESC"
+                when "Newest"
+                    "ORDER BY id ASC"
+                when "Oldest"
+                    "ORDER BY id DESC"
+                when "Last Update"
+                    "ORDER BY formss.created_at DESC"
+                else
+                    "ORDER BY id DESC"
+                end
 
+                response_data.merge!({ :status => true, :result => page_order })
+            rescue Exception => ex
+                response_data[:error] = ex.message
+            end
+
+            return response_data
+        end
+
+        # DOCU: Method to set the query settings for join statements
+        # Triggered by Forms
+        # Returns: { status: true/false, result: { query_settings }, error }
+        # Last updated at: July 20, 2022
+        # Owner: Adrian
+        def self.format_page_join_settings(params)
+            response_data = { :status => false, :result => {}, :error => nil }
+
+            begin
+                
             rescue Exception => ex
                 response_data[:error] = ex.message
             end
