@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 		get "/" 		   => "forms#home_page"
 		post "get_forms"   => "forms#get_forms"
 		post "create_form" => "forms#create_form"
+
+		get "/view" 	   => "forms#view"
 	end
 
 	# root logout
