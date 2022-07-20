@@ -15,12 +15,12 @@ module QueryHelper
     # Triggered by: Queries from different models
     # Requires: sql_statement - SELECT
     # Returns: [{"id"=>1, "title"=>"Title"}, {"id"=>2, "title"=>"Title2"}]
-    # Last updated at: July 15, 2022
+    # Last updated at: July 21, 2022
     # Owner: Adrian
     def query_records(sql_statement)
         ActiveRecord::Base.connection.exec_query(
             ActiveRecord::Base.send(:sanitize_sql_array, sql_statement)
-        ).to_hash
+        )
     end
 
     # DOCU: Insert records to the database
