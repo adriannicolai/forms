@@ -52,4 +52,20 @@ module ApplicationHelper
     def redirect_to_500
         redirect_to "/500.html"
     end
+
+    # DOCU: Function encrypt basic information
+    # Triggered by: UsersController, FormsController
+    # Last updated at: July 20, 2022
+    # Owner: Adrian
+    def encrypt text
+        Base64.urlsafe_encode64( ((text.to_i*88)+ENV['HIDING_KEY'].to_i).to_s + ENV['ENCRYPTION_KEY'] + text.to_s)
+    end
+
+    # DOCU: Function decrypt basic information
+    # Triggered by: UsersController, FormsController
+    # Last updated at: July 20, 2022
+    # Owner: Adrian
+    def decrypt encrypted_text
+        Base64.urlsafe_decode64(encrypted_text).split(ENV['ENCRYPTION_KEY'])[1]
+    end
 end
