@@ -8,14 +8,19 @@ class FormsController < ApplicationController
 
     # DOCU: home page for forms
     # Triggered by: (GET) /forms
-    # Last updated at: July 18, 2022
+	# Session - user_id
+    # Last updated at: July 20, 2022
     # Owner: Adrian
 	def home_page
 		begin
-			@forms = Form.get_form_records({ :fields_to_filter =>  })
+			@forms = Form.get_form_records({ :fields_to_filter => { :user_id => session[:user_id] }})
 		rescue Exception
 			redirect_to_404
 		end
+	end
+
+	def view_form
+		
 	end
 
 	# DOCU: home page for forms

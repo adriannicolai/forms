@@ -16,6 +16,7 @@ Rails.application.config.assets.version = "1.0"
 # ======================================================= #
 Rails.application.config.assets.precompile += %w( forms_landing_page.js )
 Rails.application.config.assets.precompile += %w( forms_home_page.js )
+Rails.application.config.assets.precompile += %w( forms_view_form.js )
 
 
 # ======================================================= #
