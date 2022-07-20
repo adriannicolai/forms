@@ -36,19 +36,24 @@ function submitGetAllForms(){
 /**
 * DOCU: This function will trigger the submission of create new form<br>
 * Triggered: .on("click", "#add_form_button", submitCreateNewForm)<br>
-* Last Updated Date: July 19, 2022
+* Last Updated Date: July 21, 2022
 * @author Adrian
 */
 function submitCreateNewForm(){
     let createForm = $("#create_form");
 
-    $.post(createForm.attr("action"), createForm.serialize(), function(create_form_response){
-        console.log(create_form_response);
-        if(create_form_response.status){
+    if(parseInt(createForm.data("is_processing")) === BOOLEAN_FIELD.no){
+        createForm.data("is_processing", BOOLEAN_FIELD.yes);
 
-        }
-        else{
-            alert(create_form_response.error);
-        }
-    });
+        $.post(createForm.attr("action"), createForm.serialize(), function(create_form_response){
+            if(create_form_response.status){
+                window.location.href = `/forms/view?id=${create_form_response.result.id}`;
+            }
+            else{
+                alert(create_form_response.error);
+            }
+
+            createForm.data("is_processing", BOOLEAN_FIELD.no);
+        });
+    }
 }
