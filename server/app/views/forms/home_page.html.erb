@@ -13,6 +13,8 @@
 
 <button id="add_form_button">Add new form</button>
 
+<a href="/logout"> Log out </a>
+
 <form action="/forms/get_forms" method="POST" data-is_processing="0" id="get_all_forms">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
 </form>
