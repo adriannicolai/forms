@@ -23,7 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_17_115640) do
 
   create_table "form_sections", charset: "utf8", force: :cascade do |t|
     t.bigint "form_id", null: false
-    t.text "forn_question_ids"
+    t.text "form_question_ids"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["form_id"], name: "index_form_sections_on_form_id"
