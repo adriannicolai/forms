@@ -9,18 +9,26 @@ class FormsController < ApplicationController
     # DOCU: home page for forms
     # Triggered by: (GET) /forms
 	# Session - user_id
-    # Last updated at: July 20, 2022
+    # Last updated at: July 21, 2022
     # Owner: Adrian
 	def home_page
 		begin
 			@forms = Form.get_form_records({ :fields_to_filter => { :user_id => session[:user_id] }})
-		rescue Exception
+
+			raise @form[:error] if !@form[:status]
+		rescue Exception => ex
 			redirect_to_404
 		end
 	end
 
 	def view_form
-		
+		begin
+			@form = Form.get_form_record({ :fields_to_filter => {:id => decrypt(params[:id]) }})
+
+			raise "Form not found" if !@form[:status]
+		rescue Exception => ex
+			redirect_to_404
+		end
 	end
 
 	# DOCU: home page for forms
