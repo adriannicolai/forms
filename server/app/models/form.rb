@@ -54,6 +54,7 @@ class Form < ApplicationRecord
                     forms WHERE
                 "]
 
+                # Add the where clause depending on the fields_to_filter given
                 params[:fields_to_filter].each_with_index do |(field, value), index|
                     select_form_query[0] += " #{ 'AND' if index > 0} #{field} = ?"
                     select_form_query << value
@@ -82,10 +83,10 @@ class Form < ApplicationRecord
                 params[:fields_to_select] ||= "*"
 
                 select_form_query = ["SELECT #{ActiveRecord::Base.sanitize_sql(params[:fields_to_select])} FROM
-
                     forms WHERE
                 "]
 
+                # Add the where clause depending on the fields_to_filter given
                 params[:fields_to_filter].each_with_index do |(field, value), index|
                     select_form_query[0] += " #{ 'AND' if index > 0} #{field} = ?"
                     select_form_query << value
@@ -142,7 +143,7 @@ class Form < ApplicationRecord
             response_data = { :status => false, :result => {}, :error => nil }
 
             begin
-                
+
             rescue Exception => ex
                 response_data[:error] = ex.message
             end
