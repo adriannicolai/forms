@@ -1,3 +1,5 @@
+include ApplicationHelper
+
 class FormsController < ApplicationController
 	before_action :check_user_session, except: [:landing_page]
 
@@ -9,7 +11,11 @@ class FormsController < ApplicationController
     # Last updated at: July 18, 2022
     # Owner: Adrian
 	def home_page
-
+		begin
+			@forms = Form.get_form_records({ :fields_to_filter =>  })
+		rescue Exception
+			redirect_to_404
+		end
 	end
 
 	# DOCU: home page for forms

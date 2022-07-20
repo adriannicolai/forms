@@ -82,7 +82,7 @@ class User < ApplicationRecord
         # Requires:  params - fields_to_filter
         # Optionals: params - fields_to_select
         # Returns: { status: true/false, result: { user_details }, error }
-        # Last updated at: July 17, 2022
+        # Last updated at: July 20, 2022
         # Owner: Adrian
         def self.get_user_record(params)
             response_data = { :status => false, :result => {}, :error => nil }
@@ -93,7 +93,7 @@ class User < ApplicationRecord
                 select_user_query = ["SELECT #{ActiveRecord::Base.sanitize_sql(params[:fields_to_select])} FROM users
                 #{ ' WHERE'if params[:fields_to_filter].present?}"]
 
-                # Add to the where clause
+                # Add the where clause depending on the fields_to_filter given
                 if params[:fields_to_filter].present?
                     params[:fields_to_filter].each_with_index do |(field, value), index|
                         select_user_query[0] += "#{' AND' if index > 0} #{field} #{field.is_a?(Array) ? 'IN(?)' : '= ?'}"
