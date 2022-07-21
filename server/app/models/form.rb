@@ -3,7 +3,7 @@ include QueryHelper
 
 class Form < ApplicationRecord
     # DOCU: Method to insert candidate for newly created users invited for interview
-    # Triggered by FormsController#create_form
+    # Triggered by: FormsController#create_form
 	# Requires: params - user_id
     # Returns: { status: true/false, result: { form_details }, error }
     # Last updated at: July 21, 2022
@@ -15,23 +15,45 @@ class Form < ApplicationRecord
             check_new_form_params = check_fields(["user_id"], [], params)
 
             if check_new_form_params[:status]
-                # Create a new forms record
-                create_form = insert_record(["
-                    INSERT INTO forms (user_id, form_settings_json, cache_response_count, created_at, updated_at)
-                    VALUES (?, ?, 0, NOW(), NOW())
-                ", check_new_form_params[:result][:user_id], DEFAULT_FORM_SETTING])
+                ActiveRecord::Base.transaction do
+                    # Create a new form record
+                    create_form = insert_record(["
+                        INSERT INTO forms (user_id, form_settings_json, cache_response_count, created_at, updated_at)
+                        VALUES (?, ?, 0, NOW(), NOW())
+                    ", check_new_form_params[:result][:user_id], DEFAULT_FORM_SETTING])
 
-                # return the en
-                if create_form.present?
-                    response_data[:status]      = true
-                    response_data[:result][:id] = encrypt(create_form)
-                else
-                    response_data[:error]  = "Error creating form record, Please try again later"
+                    # return the encrypted form_id
+                    if create_form.present?
+                        response_data[:status]      = true
+
+                            create_template_section_record = self.create_form_section_record({ :form_id => create_form, :user_id => check_new_form_params[:result][:user_id] })
+                        response_data[:result][:id] = encrypt(create_form)
+                    else
+                        Raise "Error creating form record, Please try again later"
+                    end
                 end
             else
                 response_data.merge!(check_new_form_params)
             end
 
+        rescue Exception => ex
+            response_data[:error] = ex.message
+        end
+
+        return response_data
+    end
+
+    # DOCU: Method to insert form section record
+    # Triggered by FormsController#create_form
+	# Requires: params - user_id
+    # Returns: { status: true/false, result: { form_details }, error }
+    # Last updated at: July 21, 2022
+    # Owner: Adrian
+    def self.create_form_section_record(params)
+        response_data = { :status => false, :result => {}, :error => nil }
+
+        begin
+            
         rescue Exception => ex
             response_data[:error] = ex.message
         end
