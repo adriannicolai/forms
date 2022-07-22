@@ -35,8 +35,9 @@ QUESTION_SETTINGS = {
         checkbox:        3,
         dropdown:        4
     },
-    is_required:{
-        not_required: 0,
-        required:     1
-    }
+}
+
+BOOLEAN_FIELD = {
+    yes: 1,
+    no:  0
 }
