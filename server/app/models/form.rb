@@ -6,7 +6,7 @@ class Form < ApplicationRecord
     # Triggered by: FormsController#create_form
 	# Requires: params - user_id
     # Returns: { status: true/false, result: { form_details }, error }
-    # Last updated at: July 21, 2022
+    # Last updated at: July 24, 2022
     # Owner: Adrian
     def self.create_form(params)
         response_data = { :status => false, :result => {}, :error => nil }
@@ -17,19 +17,21 @@ class Form < ApplicationRecord
             if check_new_form_params[:status]
                 ActiveRecord::Base.transaction do
                     # Create a new form record
-                    create_form = insert_record(["
-                        INSERT INTO forms (user_id, form_settings_json, cache_response_count, created_at, updated_at)
-                        VALUES (?, ?, 0, NOW(), NOW())
+                    created_form_id = insert_record(["
+                        INSERT INTO forms (title, user_id, form_settings_json, cache_response_count, created_at, updated_at)
+                        VALUES ('untitled form', ?, ?, 0, NOW(), NOW())
                     ", check_new_form_params[:result][:user_id], DEFAULT_FORM_SETTING])
 
                     # return the encrypted form_id
-                    if create_form.present?
-                        response_data[:status]      = true
+                    if created_form_id.present?
+                        response_data[:status]         = true
+                        # Create a new template section upon creating a new form
+                        create_template_section_record = self.create_form_section_record({ :form_id => created_form_id })
+                        response_data[:result][:id]    = encrypt(created_form_id)
 
-                            create_template_section_record = self.create_form_section_record({ :form_id => create_form, :user_id => check_new_form_params[:result][:user_id] })
-                        response_data[:result][:id] = encrypt(create_form)
+                        raise "Error in creating template section record, Please try again later" if !create_template_section_record[:status]
                     else
-                        Raise "Error creating form record, Please try again later"
+                        raise "Error creating form record, Please try again later"
                     end
                 end
             else
@@ -46,14 +48,19 @@ class Form < ApplicationRecord
     # DOCU: Method to insert form section record
     # Triggered by FormsController#create_form
 	# Requires: params - user_id
-    # Returns: { status: true/false, result: { form_details }, error }
-    # Last updated at: July 21, 2022
+    # Returns: { status: true/false, error }
+    # Last updated at: July 24, 2022
     # Owner: Adrian
     def self.create_form_section_record(params)
         response_data = { :status => false, :result => {}, :error => nil }
 
         begin
-            
+            create_form_section_id = insert_record(["
+                INSERT INTO form_sections (form_id, form_question_ids, created_at, updated_at)
+                VALUES (?, ?, NOW(), NOW())", params[:form_id], params[:form_question_ids]
+            ])
+
+            response_data.merge!(create_form_section_id.present? ? { :status => true } : { :error => "Error creating form section"})
         rescue Exception => ex
             response_data[:error] = ex.message
         end
