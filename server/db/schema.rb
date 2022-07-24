@@ -13,12 +13,15 @@
 ActiveRecord::Schema[7.0].define(version: 2022_07_24_014856) do
   create_table "form_questions", charset: "utf8", force: :cascade do |t|
     t.bigint "form_id", null: false
-    t.bigint "form_sections_id"
-    t.text "question_json"
+    t.bigint "form_section_id"
+    t.integer "question_type_id", limit: 2
+    t.string "title"
+    t.text "choices_json"
+    t.integer "is_required", limit: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["form_id"], name: "index_form_questions_on_form_id"
-    t.index ["form_sections_id"], name: "index_form_questions_on_form_sections_id"
+    t.index ["form_section_id"], name: "index_form_questions_on_form_section_id"
   end
 
   create_table "form_sections", charset: "utf8", force: :cascade do |t|
@@ -49,7 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_24_014856) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "form_questions", "form_sections", column: "form_sections_id"
+  add_foreign_key "form_questions", "form_sections"
   add_foreign_key "form_questions", "forms"
   add_foreign_key "form_sections", "forms"
   add_foreign_key "forms", "users"
