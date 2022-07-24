@@ -60,7 +60,13 @@ class Form < ApplicationRecord
                 VALUES (?, ?, NOW(), NOW())", params[:form_id], params[:form_question_ids]
             ])
 
-            response_data.merge!(create_form_section_id.present? ? { :status => true } : { :error => "Error creating form section"})
+            # Create a new form question after creating a section
+            if create_form_section_id.present?
+                create_form_question = self.create_form_question({ :question_type => QUESTION_SETTINGS[:question_type][:multiple_choice] })
+
+            else
+                raise "Somethign went wrong in creatting form section, Please try again later"
+            end
         rescue Exception => ex
             response_data[:error] = ex.message
         end
@@ -68,6 +74,15 @@ class Form < ApplicationRecord
         return response_data
     end
 
+    # DOCU: Method to get all form details with section and questions
+    # Triggered by FormsController#view_form
+	# Requires: params - form_id
+    # Returns: { status: true/false, result: form_details,error }
+    # Last updated at: July 24, 2022
+    # Owner: Adrian
+    def self.create_form_question(params)
+        
+    end
 
     # DOCU: Method to get all form details with section and questions
     # Triggered by FormsController#view_form
