@@ -13,7 +13,7 @@ class FormsController < ApplicationController
     # Owner: Adrian
 	def home_page
 		begin
-			@forms = Form.get_form_records({ :fields_to_filter => { :user_id => session[:user_id] }, :fields_to_select => "title, cache_response_count AS number_of_responses, updated_at AS last_modified_date" })
+			@forms = Form.get_form_records({ :fields_to_filter => { :user_id => session[:user_id] }, :fields_to_select => "id, title, cache_response_count AS number_of_responses, updated_at AS last_modified_date" })
 
 			raise @forms[:error] if (@forms[:error].present? && @forms[:error] != "Form not found")
 		rescue Exception => ex
