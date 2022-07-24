@@ -7,7 +7,7 @@ $(document).ready(function(){
 /**
 * DOCU: This function is for submitting the register user form<br>
 * Triggered: .on("submit", "#register_user_form", submitRegisterUserForm)<br>
-* Last Updated Date: July 18, 2022
+* Last Updated Date: July 24, 2022
 * @author Adrian
 */
 function submitRegisterUserForm(e){
@@ -20,9 +20,9 @@ function submitRegisterUserForm(e){
         registerUserForm.data("is_processing", BOOLEAN_FIELD.yes);
 
         $.post(registerUserForm.attr("action"), registerUserForm.serialize(), function(register_form_response){
-            console.log(register_form_response);
             if(register_form_response.status){
-                window.location.href = "/forms";
+                window.location.replace("/forms");
+
             }
             else{
                 /* TODO: add error handling here */
@@ -37,7 +37,7 @@ function submitRegisterUserForm(e){
 /**
 * DOCU: This function is for submitting the login user form<br>
 * Triggered: .on("submit", "#login_user_form", submitLoginUserForm)<br>
-* Last Updated Date: July 18, 2022
+* Last Updated Date: July 24, 2022
 * @author Adrian
 */
 function submitLoginUserForm(e){
@@ -51,7 +51,7 @@ function submitLoginUserForm(e){
 
         $.post(loginUserForm.attr("action"), loginUserForm.serialize(), function(register_form_response){
             if(register_form_response.status){
-                window.location.href = "/forms";
+                window.location.replace("/forms");
             }
             else{
                 /* TODO: add error handling here */

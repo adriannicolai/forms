@@ -36,7 +36,7 @@ function submitGetAllForms(){
 /**
 * DOCU: This function will trigger the submission of create new form<br>
 * Triggered: .on("click", "#add_form_button", submitCreateNewForm)<br>
-* Last Updated Date: July 21, 2022
+* Last Updated Date: July 24, 2022
 * @author Adrian
 */
 function submitCreateNewForm(){
@@ -47,7 +47,7 @@ function submitCreateNewForm(){
 
         $.post(createForm.attr("action"), createForm.serialize(), function(create_form_response){
             if(create_form_response.status){
-                window.location.href = `/forms/view?id=${create_form_response.result.id}`;
+                window.location.replace(`/forms/view?id=${create_form_response.result.id}`);
             }
             else{
                 alert(create_form_response.error);
