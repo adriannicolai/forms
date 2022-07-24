@@ -96,14 +96,17 @@ class Form < ApplicationRecord
         begin
             params["title"] ||= "Untitled Question"
 
-            # Segregate questions that have choices and questions that have no choices
-            response_data = case params["question_type_id"]
-            when QUESTION_SETTINGS[:question_type][:paragraph]
-                self.create_paragraph_question(params)
-            when QUESTION_SETTINGS[:question_type][:multiple_choice] || QUESTION_SETTINGS[:question_type][:checkbox] || QUESTION_SETTINGS[:question_type][:dropdown]
+            check_form_question_params = check_fields(["form_id", "form_section_id", "question_type_id", "title"], [], params)
 
+            if check_form_question_params[:status]
+                create_form_question = insert_record(["
+                    INSERT INTO form_questions (form_id, form_section_id, question_type_id, title, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, NOW(), NOW())
+                ", check_form_question_params[:result][:form_id], check_form_question_params[:result][:form_section_id],check_form_question_params[:result][:question_type_id], check_form_question_params[:result][:title] ])
+
+                response_data.merge!(create_form_question.present? ? { :status => true, :result => { :question_id => create_form_question} } : { :error => "Error in creating form question, Please try again later" })
             else
-                raise "Invalid question type."
+                response_data.merge!(check_form_question_params)
             end
         rescue Exception => ex
             response_data[:error] = ex.message
@@ -228,34 +231,6 @@ class Form < ApplicationRecord
             join_query = ""
 
             if params[:join_settings][:form_section].present?
-            end
-
-            return response_data
-        end
-
-        # DOCU: Method to insert_record for paragraph question
-        # Triggered by Forms
-        # Returns: { status: true/false, result: question_id, error }
-        # Last updated at: July 24, 2022
-        # Owner: Adrian
-        def self.create_paragraph_question(params)
-            response_data = { :status => false, :result => {}, :error => nil }
-
-            begin
-                check_form_question_params = check_fields(["form_id", "form_section_id", "question_type_id", "title"], [], params)
-
-                if check_form_question_params[:status]
-                    create_form_question = insert_record(["
-                        INSERT INTO form_questions (form_id, form_section_id, question_type_id, title, created_at, updated_at)
-                        VALUES (?, ?, ?, ?, NOW(), NOW())
-                    ", check_form_question_params[:result][:form_id], check_form_question_params[:result][:form_section_id],check_form_question_params[:result][:question_type_id], check_form_question_params[:result][:title] ])
-
-                    response_data.merge!(create_form_question.present? ? { :status => true, :result => { :question_id => create_form_question} } : { :error => "Error in creating form question, Please try again later" })
-                else
-                    response_data.merge!(check_form_question_params)
-                end
-            rescue Exception => ex
-                response_data[:error] = ex.message
             end
 
             return response_data
