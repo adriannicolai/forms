@@ -30,10 +30,9 @@ QUESTION_SETTINGS = {
     },
     question_type: {
         multiple_choice: 0,
-        short_answer:    1,
-        paragraph:       2,
-        checkbox:        3,
-        dropdown:        4
+        paragraph:       1,
+        checkbox:        2,
+        dropdown:        3
     },
 }
 
