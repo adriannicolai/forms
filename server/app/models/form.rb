@@ -68,6 +68,25 @@ class Form < ApplicationRecord
         return response_data
     end
 
+
+    # DOCU: Method to get all form details with section and questions
+    # Triggered by FormsController#view_form
+	# Requires: params - form_id
+    # Returns: { status: true/false, result: form_details,error }
+    # Last updated at: July 24, 2022
+    # Owner: Adrian
+    def self.get_form_details(params)
+        response_data = { :status => false, :result => {}, :error => nil }
+
+        begin
+
+        rescue Exception => ex
+            response_data[:error] = ex.message
+        end
+
+        return response_data
+    end
+
     private
         # DOCU: Method to fetch a single form record
         # Triggered by Forms
