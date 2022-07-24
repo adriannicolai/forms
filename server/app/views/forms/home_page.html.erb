@@ -14,6 +14,13 @@
 <button id="add_form_button">Add new form</button>
 
 <a href="/logout"> Log out </a>
+<div class="forms_container">
+<% if @forms[:status] && @forms[:result].length > 0 %>
+    <% @forms[:result].each do |form| %>
+        <%= render :partial => "/forms/partials/form_card", :locals => {:form => form} %>
+    <% end %>
+<% end %>
+</div>
 
 <form action="/forms/get_forms" method="POST" data-is_processing="0" id="get_all_forms">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
