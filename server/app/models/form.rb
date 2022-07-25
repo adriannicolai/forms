@@ -88,7 +88,7 @@ class Form < ApplicationRecord
 	# Requires: params - form_id, question_type_id, title
     # Optionals: params - choices
     # Returns: { status: true/false, result: form_details,error }
-    # Last updated at: July 24, 2022
+    # Last updated at: July 25, 2022
     # Owner: Adrian
     def self.create_form_question(params)
         response_data = { :status => false, :result => {}, :error => nil }
@@ -100,9 +100,9 @@ class Form < ApplicationRecord
 
             if check_form_question_params[:status]
                 create_form_question = insert_record(["
-                    INSERT INTO form_questions (form_id, form_section_id, question_type_id, title, created_at, updated_at)
-                    VALUES (?, ?, ?, ?, NOW(), NOW())
-                ", check_form_question_params[:result][:form_id], check_form_question_params[:result][:form_section_id],check_form_question_params[:result][:question_type_id], check_form_question_params[:result][:title] ])
+                    INSERT INTO form_questions (form_id, form_section_id, question_type_id, title, is_required, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, NOW(), NOW())
+                ", check_form_question_params[:result][:form_id], check_form_question_params[:result][:form_section_id],check_form_question_params[:result][:question_type_id], check_form_question_params[:result][:title], BOOLEAN_FIELD[:no] ])
 
                 response_data.merge!(create_form_question.present? ? { :status => true, :result => { :question_id => create_form_question} } : { :error => "Error in creating form question, Please try again later" })
             else
@@ -231,6 +231,21 @@ class Form < ApplicationRecord
             join_query = ""
 
             if params[:join_settings][:form_section].present?
+            end
+
+            return response_data
+        end
+
+        def self.update_form_section_record(params)
+            response_data = { :status => false, :result => {}, :error => nil }
+
+            begin
+
+                update_form_section_query = ["
+                    UPDATE form_sections SET
+                "]
+            rescue Exception => ex
+                response_data[:error] = ex.message
             end
 
             return response_data
