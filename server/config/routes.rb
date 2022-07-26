@@ -13,11 +13,11 @@ Rails.application.routes.draw do
     # Last updated at: July 16, 2022
     # Owner: Adrian
 	scope "/forms" do
-		get "/" 		   => "forms#home_page"
+		get  "/" 		   => "forms#home_page"
 		post "get_forms"   => "forms#get_forms"
 		post "create_form" => "forms#create_form"
-
-		get "/view" 	   => "forms#view_form"
+		get  "/view" 	   => "forms#view_form"
+		post "delete_form" => "forms#delete_form"
 	end
 
 	# root logout
