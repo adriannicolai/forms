@@ -51,8 +51,8 @@ module QueryHelper
         # Triggered by: Queries from different models
         # Requires: sql_statement - DELETE
         # Returns: The number of rows affected
-        # Last updated at: July 26, 2022
-        # Owner: Jessie
+        # Last updated at: July 27, 2022
+        # Owner: Adrian
         def delete_record(sql_statement)
             ActiveRecord::Base.connection.delete(
                 ActiveRecord::Base.send(:sanitize_sql_array, sql_statement)

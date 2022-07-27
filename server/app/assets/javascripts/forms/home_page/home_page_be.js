@@ -47,7 +47,7 @@ function submitCreateNewForm(){
 
         $.post(createForm.attr("action"), createForm.serialize(), function(create_form_response){
             if(create_form_response.status){
-                window.open(`/forms/view?id=${create_form_response.result.id}`,"_self")
+                window.open(`/forms/view?id=${create_form_response.result.id}`,"_self");
             }
             else{
                 alert(create_form_response.error);

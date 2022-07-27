@@ -51,7 +51,7 @@ function submitLoginUserForm(e){
 
         $.post(loginUserForm.attr("action"), loginUserForm.serialize(), function(register_form_response){
             if(register_form_response.status){
-                window.open("/forms","_self")
+                window.open("/forms","_self");
             }
             else{
                 /* TODO: add error handling here */
