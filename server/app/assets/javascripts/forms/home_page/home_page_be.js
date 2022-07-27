@@ -36,7 +36,7 @@ function submitGetAllForms(){
 /**
 * DOCU: This function will trigger the submission of create new form<br>
 * Triggered: .on("click", "#add_form_button", submitCreateNewForm)<br>
-* Last Updated Date: July 24, 2022
+* Last Updated Date: July 27, 2022
 * @author Adrian
 */
 function submitCreateNewForm(){
