@@ -1,8 +1,9 @@
 <% if form.present? %>
-    <div data-ecrypted_id="<%= encrypt(form["id"]) %>" class="form_card_container">
+    <div data-ecrypted_form_id="<%= encrypt(form["id"]) %>" class="form_card_container">
         <p><%= form["title"] %></p>
         <p><%= form["last_modified_date"] %></p>
         <p><%= form["number_of_responses"] %>  <%= "response".pluralize(form["number_of_responses"] === 0 ? 1 : form["number_of_responses"] ) %></p>
         <a href="/forms/view?id=<%= encrypt(form["id"]) %>">view form</a>
+        <button class="delete_form_trigger">Delete Form</button>
     </div>
 <% end %>
