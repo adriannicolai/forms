@@ -7,19 +7,19 @@ $(document).ready(function(){
 /**
 * DOCU: This function is for submitting the register user form<br>
 * Triggered: .on("submit", "#register_user_form", submitRegisterUserForm)<br>
-* Last Updated Date: July 27, 2022
+* Last Updated Date: July 28, 2022
 * @author Adrian
 */
 function submitRegisterUserForm(e){
     e.preventDefault();
 
-    let registerUserForm = $(this);
+    let register_user_form = $(this);
 
     /* Prevent user from spam clicking the register button */
-    if(parseInt(registerUserForm.data("is_processing")) === BOOLEAN_FIELD.no){
-        registerUserForm.data("is_processing", BOOLEAN_FIELD.yes);
+    if(parseInt(register_user_form.data("is_processing")) === BOOLEAN_FIELD.no){
+        register_user_form.data("is_processing", BOOLEAN_FIELD.yes);
 
-        $.post(registerUserForm.attr("action"), registerUserForm.serialize(), function(register_form_response){
+        $.post(register_user_form.attr("action"), register_user_form.serialize(), function(register_form_response){
             if(register_form_response.status){
                 window.open("/forms","_self");
 
@@ -29,7 +29,7 @@ function submitRegisterUserForm(e){
                 alert(register_form_response.error);
             }
 
-            registerUserForm.data("is_processing", BOOLEAN_FIELD.no);
+            register_user_form.data("is_processing", BOOLEAN_FIELD.no);
         });
     }
 }
@@ -37,19 +37,19 @@ function submitRegisterUserForm(e){
 /**
 * DOCU: This function is for submitting the login user form<br>
 * Triggered: .on("submit", "#login_user_form", submitLoginUserForm)<br>
-* Last Updated Date: July 277, 2022
+* Last Updated Date: July 28, 2022
 * @author Adrian
 */
 function submitLoginUserForm(e){
     e.preventDefault();
 
-    let loginUserForm = $(this);
+    let login_user_form = $(this);
 
     /* Prevent user from spam clicking the login button */
-    if(parseInt(loginUserForm.data("is_processing")) === BOOLEAN_FIELD.no){
-        loginUserForm.data("is_processing", BOOLEAN_FIELD.yes);
+    if(parseInt(login_user_form.data("is_processing")) === BOOLEAN_FIELD.no){
+        login_user_form.data("is_processing", BOOLEAN_FIELD.yes);
 
-        $.post(loginUserForm.attr("action"), loginUserForm.serialize(), function(register_form_response){
+        $.post(login_user_form.attr("action"), login_user_form.serialize(), function(register_form_response){
             if(register_form_response.status){
                 window.open("/forms","_self");
             }
@@ -58,7 +58,7 @@ function submitLoginUserForm(e){
                 alert(register_form_response.error);
             }
 
-            loginUserForm.data("is_processing", BOOLEAN_FIELD.no);
+            login_user_form.data("is_processing", BOOLEAN_FIELD.no);
         });
     }
 }

@@ -1,8 +1,9 @@
 $(document).ready(function(){
     $(document)
-        .on("submit", "#get_all_forms", submitGetAllForms)      /* This function will submit the get all forms and update the forms list */
+        .on("submit", "#get_all_forms", submitGetAllForms)       /* This function will submit the get all forms and update the forms list */
         .on("change", "#form_sort_order", updateFormSortOrder)   /* This function will handle the submission of the form sort order  */
-        .on("click", "#add_form_button", submitCreateNewForm);   /* This function will trigger the submission of the create new form */
+        .on("click", "#add_form_button", submitCreateNewForm)    /* This function will submit the submission of the create new form */
+        .on("click", ".delete_form_trigger", submitDeleteForm);  /* This function will submit the submission of the delete form */
 });
 
 /**
@@ -12,7 +13,7 @@ $(document).ready(function(){
 * @author Adrian
 */
 function updateFormSortOrder(){
-    let GetAllForms = $("#get_all_forms");
+    let get_all_forms = $("#get_all_forms");
 
     /* TODO: will update this */
 }
@@ -20,14 +21,14 @@ function updateFormSortOrder(){
 /**
 * DOCU: This function will handle the submission the get all forms and update the forms list<br>
 * Triggered: .on("submit", "#get_all_forms", submitGetAllForms)<br>
-* Last Updated Date: July 19, 2022
+* Last Updated Date: July 28, 2022
 * @author Adrian
 */
 function submitGetAllForms(){
-    let GetAllForms = $("#get_all_forms");
+    let get_all_forms = $("#get_all_forms");
 
-    if(parseInt(GetAllForms.data("is_processing")) === BOOLEAN_FIELD.no){
-        GetAllForms.data("is_processing", BOOLEAN_FIELD.yes1);
+    if(parseInt(get_all_forms.data("is_processing")) === BOOLEAN_FIELD.no){
+        get_all_forms.data("is_processing", BOOLEAN_FIELD.yes1);
 
         /* TODO: submit form here */
     }
@@ -36,16 +37,16 @@ function submitGetAllForms(){
 /**
 * DOCU: This function will trigger the submission of create new form<br>
 * Triggered: .on("click", "#add_form_button", submitCreateNewForm)<br>
-* Last Updated Date: July 27, 2022
+* Last Updated Date: July 28, 2022
 * @author Adrian
 */
 function submitCreateNewForm(){
-    let createForm = $("#create_form");
+    let create_form = $("#create_form");
 
-    if(parseInt(createForm.data("is_processing")) === BOOLEAN_FIELD.no){
-        createForm.data("is_processing", BOOLEAN_FIELD.yes);
+    if(parseInt(create_form.data("is_processing")) === BOOLEAN_FIELD.no){
+        create_form.data("is_processing", BOOLEAN_FIELD.yes);
 
-        $.post(createForm.attr("action"), createForm.serialize(), function(create_form_response){
+        $.post(create_form.attr("action"), create_form.serialize(), function(create_form_response){
             if(create_form_response.status){
                 window.open(`/forms/view?id=${create_form_response.result.id}`,"_self");
             }
@@ -53,7 +54,25 @@ function submitCreateNewForm(){
                 alert(create_form_response.error);
             }
 
-            createForm.data("is_processing", BOOLEAN_FIELD.no);
+            create_form.data("is_processing", BOOLEAN_FIELD.no);
+        });
+    }
+}
+
+/**
+* DOCU: This function will trigger the submission of delete form form and append form details<br>
+* Triggered: .on("click", ".delete_form_trigger", submitDeleteForm)<br>
+* Last Updated Date: July 28, 2022
+* @author Adrian
+*/
+function submitDeleteForm(){
+    let deleteForm = $(this);
+
+    if(parseInt(deleteForm.data("is_processing")) === BOOLEAN_FIELD.no){
+        deleteForm.data("is_processing", BOOLEAN_FIELD.yes);
+
+        $.post(deleteForm.attr("action"), deleteForm.serialize(), function(delete_formr_response){
+            
         });
     }
 }
