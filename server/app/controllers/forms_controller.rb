@@ -65,6 +65,24 @@ class FormsController < ApplicationController
 		render :json => response_data
 	end
 
+	# DOCU: This will delete the form
+    # Triggered by: (POST) /forms/delete_form
+	# Session - user_id
+    # Returns: { status: true/false, result, error }
+    # Last updated at: July 26, 2022
+    # Owner: Adrian
+	def delete_form
+		response_data = { :status => false, :result => {}, :error => nil }
+
+		begin
+
+		rescue Exception => ex
+			response_data[:error] = ex.message
+		end
+
+		return response_data
+	end
+
 	private
 		# DOCU: Redirects the user to the landing page if there is no session
 		# Triggered by before_action

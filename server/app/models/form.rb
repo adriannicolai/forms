@@ -6,7 +6,7 @@ class Form < ApplicationRecord
     # Triggered by: FormsController#create_form
 	# Requires: params - user_id
     # Returns: { status: true/false, result: { form_details }, error }
-    # Last updated at: July 24, 2022
+    # Last updated at: July 27, 2022
     # Owner: Adrian
     def self.create_form(params)
         response_data = { :status => false, :result => {}, :error => nil }
@@ -24,12 +24,15 @@ class Form < ApplicationRecord
 
                     # return the encrypted form_id
                     if created_form_id.present?
-                        response_data[:status]         = true
                         # Create a new template section upon creating a new form
-                        create_template_section_record = self.create_form_section_record({ :form_id => created_form_id })
-                        response_data[:result][:id]    = encrypt(created_form_id)
+                        create_template_section_record = FormSection.create_form_section_record({ :form_id => created_form_id })
 
-                        raise "Error in creating template section record, Please try again later" if !create_template_section_record[:status]
+                        if create_template_section_record[:status]
+                            response_data[:status]     = true
+                            response_data[:result][:id] = encrypt(created_form_id)
+                        else
+                            raise create_template_section_record[:error] if !create_template_section_record[:status]
+                        end
                     else
                         raise "Error creating form record, Please try again later"
                     end
@@ -45,98 +48,10 @@ class Form < ApplicationRecord
         return response_data
     end
 
-    # DOCU: Method to insert form section record
-    # Triggered by FormsController#create_form
-	# Requires: params - user_id
-    # Returns: { status: true/false, error }
-    # Last updated at: July 24, 2022
-    # Owner: Adrian
-    def self.create_form_section_record(params)
-        response_data = { :status => false, :result => {}, :error => nil }
-
-        begin
-            create_form_section_id = insert_record(["
-                INSERT INTO form_sections (form_id, form_question_ids, created_at, updated_at)
-                VALUES (?, '[]', NOW(), NOW())", params[:form_id]
-            ])
-
-            # Create a new form question after creating a section
-            if create_form_section_id.present?
-                create_form_question = self.create_form_question({
-                    "question_type_id" => QUESTION_SETTINGS[:question_type][:paragraph],
-                    "form_id"          => params[:form_id],
-                    "form_section_id"  => create_form_section_id
-                })
-
-                if create_form_question[:status]
-                    response_data.merge!(create_form_question)
-                else
-                    raise create_form_question[:error]
-                end
-            else
-                raise "Somethign went wrong in creatting form section, Please try again later"
-            end
-        rescue Exception => ex
-            response_data[:error] = ex.message
-        end
-
-        return response_data
-    end
-
-    # DOCU: Method to get all form details with section and questions
-    # Triggered by FormsController#view_form
-	# Requires: params - form_id, question_type_id, title
-    # Optionals: params - choices
-    # Returns: { status: true/false, result: form_details,error }
-    # Last updated at: July 25, 2022
-    # Owner: Adrian
-    def self.create_form_question(params)
-        response_data = { :status => false, :result => {}, :error => nil }
-
-        begin
-            params["title"] ||= "Untitled Question"
-
-            check_form_question_params = check_fields(["form_id", "form_section_id", "question_type_id", "title"], [], params)
-
-            if check_form_question_params[:status]
-                create_form_question = insert_record(["
-                    INSERT INTO form_questions (form_id, form_section_id, question_type_id, title, is_required, created_at, updated_at)
-                    VALUES (?, ?, ?, ?, ?, NOW(), NOW())
-                ", check_form_question_params[:result][:form_id], check_form_question_params[:result][:form_section_id], check_form_question_params[:result][:question_type_id], check_form_question_params[:result][:title], BOOLEAN_FIELD[:no] ])
-
-                # Update the form section, append the new question to the question
-                if create_form_question.present?
-                    add_question_id_on_form_sections = update_record(["
-                        UPDATE form_sections SET
-                            form_question_ids = IF(
-                                JSON_CONTAINS(form_question_ids, ?, '$'), form_question_ids, JSON_ARRAY_APPEND(form_question_ids, '$', ?)
-                            )
-                        WHERE id = ?
-                    ", create_form_question, create_form_question, check_form_question_params[:result][:form_section_id]])
-
-                    if add_question_id_on_form_sections.present?
-                        response_data[:status] = true
-                    else
-                        raise "Error in adding form_question_ids, Please try again later"
-                    end
-                else
-                    response_data[:error] = "Error in creating form question, Please try again later"
-                end
-                response_data.merge!(create_form_question.present? ? { :status => true, :result => { :question_id => create_form_question} } : { :error => "" })
-            else
-                response_data.merge!(check_form_question_params)
-            end
-        rescue Exception => ex
-            response_data[:error] = ex.message
-        end
-
-        return response_data
-    end
-
     # DOCU: Method to get all form details with section and questions
     # Triggered by FormsController#view_form
 	# Requires: params - form_id
-    # Returns: { status: true/false, result: form_details,error }
+    # Returns: { status: true/false, result: form_details, error }
     # Last updated at: July 24, 2022
     # Owner: Adrian
     def self.get_form_details(params)
@@ -150,6 +65,26 @@ class Form < ApplicationRecord
 
         return response_data
     end
+
+    # DOCU: Method to get all form details with section and questions
+    # Triggered by FormsController#view_form
+	# Requires: params - form_id
+    # Returns: { status: true/false, result, error }
+    # Last updated at: July 27, 2022
+    # Owner: Adrian
+    # def self.delete_form(params)
+    #     response_data = { :status => false, :result => {}, :error => nil }
+
+    #     begin
+    #         # # Check if the for required fields
+    #         # check_delete_form_paras = check_fields(["form_id"])
+    #         # ActiveRecord::Base.transaction do
+
+    #         # end
+    #     rescue Exception => ex
+    #         response_data[:error] = ex.message
+    #     end
+    # end
 
     private
         # DOCU: Method to fetch a single form record

@@ -46,4 +46,16 @@ module QueryHelper
             ActiveRecord::Base.send(:sanitize_sql_array, sql_statement)
         )
     end
+
+        # DOCU: Delete records in the database
+        # Triggered by: Queries from different models
+        # Requires: sql_statement - DELETE
+        # Returns: The number of rows affected
+        # Last updated at: July 27, 2022
+        # Owner: Adrian
+        def delete_record(sql_statement)
+            ActiveRecord::Base.connection.delete(
+                ActiveRecord::Base.send(:sanitize_sql_array, sql_statement)
+            )
+        end
 end

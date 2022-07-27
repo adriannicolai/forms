@@ -7,7 +7,7 @@ $(document).ready(function(){
 /**
 * DOCU: This function is for submitting the register user form<br>
 * Triggered: .on("submit", "#register_user_form", submitRegisterUserForm)<br>
-* Last Updated Date: July 24, 2022
+* Last Updated Date: July 27, 2022
 * @author Adrian
 */
 function submitRegisterUserForm(e){
@@ -21,12 +21,12 @@ function submitRegisterUserForm(e){
 
         $.post(registerUserForm.attr("action"), registerUserForm.serialize(), function(register_form_response){
             if(register_form_response.status){
-                window.location.replace("/forms");
+                window.open("/forms","_self");
 
             }
             else{
                 /* TODO: add error handling here */
-                alert("error");
+                alert(register_form_response.error);
             }
 
             registerUserForm.data("is_processing", BOOLEAN_FIELD.no);
@@ -37,7 +37,7 @@ function submitRegisterUserForm(e){
 /**
 * DOCU: This function is for submitting the login user form<br>
 * Triggered: .on("submit", "#login_user_form", submitLoginUserForm)<br>
-* Last Updated Date: July 24, 2022
+* Last Updated Date: July 277, 2022
 * @author Adrian
 */
 function submitLoginUserForm(e){
@@ -51,11 +51,11 @@ function submitLoginUserForm(e){
 
         $.post(loginUserForm.attr("action"), loginUserForm.serialize(), function(register_form_response){
             if(register_form_response.status){
-                window.location.replace("/forms");
+                window.open("/forms","_self");
             }
             else{
                 /* TODO: add error handling here */
-                alert("error");
+                alert(register_form_response.error);
             }
 
             loginUserForm.data("is_processing", BOOLEAN_FIELD.no);
