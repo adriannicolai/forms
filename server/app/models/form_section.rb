@@ -74,7 +74,7 @@ class FormSection < ApplicationRecord
         # Triggered by FormsController, FormSection
         # Requires: params - {fields_to_filter - form_id, form_section_id}
         # Returns: { status: true/false, result: form_details, error }
-        # Last updated at: July 26, 2022
+        # Last updated at: July 27, 2022
         # Owner: Adrian
         def self.delete_form_section(params)
             response_data = { :status => false, :result => {}, :error => nil }
@@ -93,9 +93,10 @@ class FormSection < ApplicationRecord
                         delete_form_record_query[0] += " #{'AND' if index > 0} #{field} = ?"
                         delete_form_record_query    << value
                     end
+
+                    response_data.merge!(delete_record(delete_form_record_query).present? ? { :status => true } : { :error => "error in deletinng form_question, Please try again later" })
                 end
 
-                response_data.merge!(delete_record(delete_form_record_query).present? { :status => true } : { :error => "error in deletinng form_question, Please try again later" })
             rescue Exception => ex
                 response_data[:error] = ex.message
             end

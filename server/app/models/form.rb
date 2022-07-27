@@ -6,7 +6,7 @@ class Form < ApplicationRecord
     # Triggered by: FormsController#create_form
 	# Requires: params - user_id
     # Returns: { status: true/false, result: { form_details }, error }
-    # Last updated at: July 24, 2022
+    # Last updated at: July 27, 2022
     # Owner: Adrian
     def self.create_form(params)
         response_data = { :status => false, :result => {}, :error => nil }
@@ -24,12 +24,15 @@ class Form < ApplicationRecord
 
                     # return the encrypted form_id
                     if created_form_id.present?
-                        response_data[:status]         = true
                         # Create a new template section upon creating a new form
                         create_template_section_record = FormSection.create_form_section_record({ :form_id => created_form_id })
-                        response_data[:result][:id]    = encrypt(created_form_id)
 
-                        raise "Error in creating template section record, Please try again later" if !create_template_section_record[:status]
+                        if create_template_section_record[:status]
+                            response_data[:status]     = true
+                            response_data[:result][:id] = encrypt(created_form_id)
+                        else
+                            raise create_template_section_record[:error] if !create_template_section_record[:status]
+                        end
                     else
                         raise "Error creating form record, Please try again later"
                     end
@@ -48,7 +51,7 @@ class Form < ApplicationRecord
     # DOCU: Method to get all form details with section and questions
     # Triggered by FormsController#view_form
 	# Requires: params - form_id
-    # Returns: { status: true/false, result: form_details,error }
+    # Returns: { status: true/false, result: form_details, error }
     # Last updated at: July 24, 2022
     # Owner: Adrian
     def self.get_form_details(params)
@@ -62,6 +65,26 @@ class Form < ApplicationRecord
 
         return response_data
     end
+
+    # DOCU: Method to get all form details with section and questions
+    # Triggered by FormsController#view_form
+	# Requires: params - form_id
+    # Returns: { status: true/false, result, error }
+    # Last updated at: July 27, 2022
+    # Owner: Adrian
+    # def self.delete_form(params)
+    #     response_data = { :status => false, :result => {}, :error => nil }
+
+    #     begin
+    #         # # Check if the for required fields
+    #         # check_delete_form_paras = check_fields(["form_id"])
+    #         # ActiveRecord::Base.transaction do
+
+    #         # end
+    #     rescue Exception => ex
+    #         response_data[:error] = ex.message
+    #     end
+    # end
 
     private
         # DOCU: Method to fetch a single form record
