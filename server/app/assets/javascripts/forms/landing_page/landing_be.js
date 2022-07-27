@@ -26,7 +26,7 @@ function submitRegisterUserForm(e){
             }
             else{
                 /* TODO: add error handling here */
-                alert("error");
+                alert(register_form_response.error);
             }
 
             registerUserForm.data("is_processing", BOOLEAN_FIELD.no);
@@ -55,7 +55,7 @@ function submitLoginUserForm(e){
             }
             else{
                 /* TODO: add error handling here */
-                alert("error");
+                alert(register_form_response.error);
             }
 
             loginUserForm.data("is_processing", BOOLEAN_FIELD.no);
