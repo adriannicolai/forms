@@ -74,6 +74,15 @@ function submitDeleteForm(e){
         deleteForm.data("is_processing", BOOLEAN_FIELD.yes);
 
         $.post(deleteForm.attr("action"), deleteForm.serialize(), function(delete_form_response){
+            let form_card_parent_container = $("div.forms_container");
+
+            if(delete_form_response.status){
+                form_card_parent_container.children(".form_to_remove").remove();
+            }
+            else{
+                form_card_parent_container.find(".form_card_container").removeClass("form_to_remove");
+                alert(delete_form_response.error)
+            }
             deleteForm.data("is_processing", BOOLEAN_FIELD.no);
         });
     }
