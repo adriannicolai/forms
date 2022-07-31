@@ -69,18 +69,20 @@ class FormsController < ApplicationController
     # Triggered by: (POST) /forms/delete_form
 	# Session - user_id
     # Returns: { status: true/false, result, error }
-    # Last updated at: July 26, 2022
+    # Last updated at: July 31, 2022
     # Owner: Adrian
 	def delete_form
 		response_data = { :status => false, :result => {}, :error => nil }
 
 		begin
+			delete_form = Form.delete_form(params.merge!( :user_id => session[:user_id] ))
 
+			response_data.merge!(delete_form)
 		rescue Exception => ex
 			response_data[:error] = ex.message
 		end
 
-		return response_data
+		render :json => response_data
 	end
 
 	private
