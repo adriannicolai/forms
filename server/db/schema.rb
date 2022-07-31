@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_24_014856) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_31_011912) do
   create_table "form_questions", charset: "utf8", force: :cascade do |t|
     t.bigint "form_id", null: false
     t.bigint "form_section_id"
@@ -22,6 +22,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_24_014856) do
     t.datetime "updated_at", null: false
     t.index ["form_id"], name: "index_form_questions_on_form_id"
     t.index ["form_section_id"], name: "index_form_questions_on_form_section_id"
+  end
+
+  create_table "form_responses", charset: "utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "form_id", null: false
+    t.bigint "form_question_id", null: false
+    t.text "answer_json"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_id"], name: "index_form_responses_on_form_id"
+    t.index ["form_question_id"], name: "index_form_responses_on_form_question_id"
+    t.index ["user_id"], name: "index_form_responses_on_user_id"
   end
 
   create_table "form_sections", charset: "utf8", force: :cascade do |t|
@@ -54,6 +66,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_24_014856) do
 
   add_foreign_key "form_questions", "form_sections"
   add_foreign_key "form_questions", "forms"
+  add_foreign_key "form_responses", "form_questions"
+  add_foreign_key "form_responses", "forms"
+  add_foreign_key "form_responses", "users"
   add_foreign_key "form_sections", "forms"
   add_foreign_key "forms", "users"
 end
