@@ -1,18 +1,20 @@
-<h2>Create a User</h2>
-<form action="/user/create_user" method="POST" id="register_user_form" data-is_processing="0">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-    <input type="text" name="first_name" placeholder="First Name" />
-    <input type="text" name="last_name" placeholder ="Last Name" />
-    <input type="text" name="email" placeholder ="Email" />
-    <input type="text" name="password" placeholder ="Password" />
-    <input type="text" name="confirm_password" placeholder ="Confirm Password" />
-    <input type="submit" value="Register" />
-</form>
+<div class="container"></div>
+    <h2>Create a User</h2>
+    <form action="/user/create_user" method="POST" id="register_user_form" data-is_processing="0">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+        <input type="text" name="first_name" placeholder="First Name" />
+        <input type="text" name="last_name" placeholder ="Last Name" />
+        <input type="text" name="email" placeholder ="Email" />
+        <input type="text" name="password" placeholder ="Password" />
+        <input type="text" name="confirm_password" placeholder ="Confirm Password" />
+        <input type="submit" value="Register" />
+    </form>
 
-<h2>Login User</h2>
-<form action="/user/login" method="POST" id="login_user_form" data-is_processing="0">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-    <input type="text" name="email" placeholder ="Email" />
-    <input type="text" name="password" placeholder ="Password" />
-    <input type="submit" value="Login" />
-</form>
+    <h2>Login User</h2>
+    <form action="/user/login" method="POST" id="login_user_form" data-is_processing="0">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+        <input type="text" name="email" placeholder ="Email" />
+        <input type="text" name="password" placeholder ="Password" />
+        <input type="submit" value="Login" />
+    </form>
+</div>
