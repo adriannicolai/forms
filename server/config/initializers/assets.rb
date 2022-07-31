@@ -14,11 +14,14 @@ Rails.application.config.assets.version = "1.0"
 # ======================================================= #
 # 							CSS  						  #
 # ======================================================= #
-Rails.application.config.assets.precompile += %w( forms_landing_page.js )
-Rails.application.config.assets.precompile += %w( forms_home_page.js )
-Rails.application.config.assets.precompile += %w( forms_view_form.js )
 
 
 # ======================================================= #
 # 							JS  						  #
 # ======================================================= #
+Rails.application.config.assets.precompile += %w( forms_landing_page.js )
+Rails.application.config.assets.precompile += %w( forms_home_page.js )
+Rails.application.config.assets.precompile += %w( forms_view_form.js )
+
+# Boot strap
+Rails.application.config.assets.precompile += %w(bootstrap.min.js popper.js)
