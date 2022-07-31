@@ -3,7 +3,7 @@ $(document).ready(function(){
         .on("submit", "#get_all_forms", submitGetAllForms)       /* This function will submit the get all forms and update the forms list */
         .on("change", "#form_sort_order", updateFormSortOrder)   /* This function will handle the submission of the form sort order  */
         .on("click", "#add_form_button", submitCreateNewForm)    /* This function will submit the submission of the create new form */
-        .on("click", ".delete_form_trigger", submitDeleteForm);  /* This function will submit the submission of the delete form */
+        .on("submit", "#delete_form", submitDeleteForm);  /* This function will submit the submission of the delete form */
 });
 
 /**
@@ -21,14 +21,14 @@ function updateFormSortOrder(){
 /**
 * DOCU: This function will handle the submission the get all forms and update the forms list<br>
 * Triggered: .on("submit", "#get_all_forms", submitGetAllForms)<br>
-* Last Updated Date: July 28, 2022
+* Last Updated Date: July 31, 2022
 * @author Adrian
 */
 function submitGetAllForms(){
     let get_all_forms = $("#get_all_forms");
 
     if(parseInt(get_all_forms.data("is_processing")) === BOOLEAN_FIELD.no){
-        get_all_forms.data("is_processing", BOOLEAN_FIELD.yes1);
+        get_all_forms.data("is_processing", BOOLEAN_FIELD.yes);
 
         /* TODO: submit form here */
     }
@@ -65,14 +65,16 @@ function submitCreateNewForm(){
 * Last Updated Date: July 28, 2022
 * @author Adrian
 */
-function submitDeleteForm(){
+function submitDeleteForm(e){
+    e.preventDefault();
+
     let deleteForm = $(this);
 
     if(parseInt(deleteForm.data("is_processing")) === BOOLEAN_FIELD.no){
         deleteForm.data("is_processing", BOOLEAN_FIELD.yes);
 
-        $.post(deleteForm.attr("action"), deleteForm.serialize(), function(delete_formr_response){
-            
+        $.post(deleteForm.attr("action"), deleteForm.serialize(), function(delete_form_response){
+            deleteForm.data("is_processing", BOOLEAN_FIELD.no);
         });
     }
 }
