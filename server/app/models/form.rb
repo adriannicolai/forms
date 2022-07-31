@@ -126,9 +126,12 @@ class Form < ApplicationRecord
             else
                 response_data.merge!(check_delete_form_params)
             end
+
         rescue Exception => ex
             response_data[:error] = ex.message
         end
+
+        return response_data
     end
 
     private
