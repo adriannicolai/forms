@@ -70,21 +70,66 @@ class Form < ApplicationRecord
     # Triggered by FormsController#view_form
 	# Requires: params - form_id
     # Returns: { status: true/false, result, error }
-    # Last updated at: July 27, 2022
+    # Last updated at: July 31, 2022
     # Owner: Adrian
-    # def self.delete_form(params)
-    #     response_data = { :status => false, :result => {}, :error => nil }
+    def self.delete_form(params)
+        response_data = { :status => false, :result => {}, :error => nil }
 
-    #     begin
-    #         # # Check if the for required fields
-    #         # check_delete_form_paras = check_fields(["form_id"])
-    #         # ActiveRecord::Base.transaction do
+        begin
+            # Check if the for required fields
+            check_delete_form_params = check_fields(["form_id", "user_id"], [], params)
 
-    #         # end
-    #     rescue Exception => ex
-    #         response_data[:error] = ex.message
-    #     end
-    # end
+            if check_delete_form_params[:status]
+                form_id = decrypt(check_delete_form_params[:result][:form_id])
+
+                # Check if the form record is exisiting in the database
+                get_form_record = self.get_form_record({
+                    :fields_to_filter => { :user_id => check_delete_form_params[:result][:user_id], :id => form_id }
+                })
+
+                if get_form_record[:status]
+                    ActiveRecord::Base.transaction do
+                        # Delete the form_responses associated with the form_id
+                        delete_form_responses = FormResponse.delete_form_response({ :fields_to_filter => { :form_id => form_id }})
+
+                        if delete_form_responses[:status]
+                            # Delete the form_questions associated with the form_id
+                            delete_form_questions = FormQuestion.delete_form_question({ :fields_to_filter => { :form_id => form_id }})
+
+                            if delete_form_questions[:status]
+                                # Delete the form_sections associated with the form_id
+                                delete_form_sections = FormSection.delete_form_section({ :fields_to_filter => { :form_id => form_id }})
+
+                                if delete_form_sections[:status]
+                                    # Delete the form associated with the form_id
+                                    delete_form = delete_record([ "DELETE FROM forms WHERE id = ? AND user_id = ? ", form_id, check_delete_form_params[:result][:user_id] ])
+
+                                    # Return the response
+                                    if delete_form.present?
+                                        response_data[:status] = true
+                                    else
+                                        raise "Error deleting form, Please try again later"
+                                    end
+                                else
+                                    raise delete_form_sections[:error]
+                                end
+                            else
+                                raise delete_form_questions[:error]
+                            end
+                        else
+                            raise delete_form_responses[:error]
+                        end
+                    end
+                else
+                    raise get_form_record[:error]
+                end
+            else
+                response_data.merge!(check_delete_form_params)
+            end
+        rescue Exception => ex
+            response_data[:error] = ex.message
+        end
+    end
 
     private
         # DOCU: Method to fetch a single form record
