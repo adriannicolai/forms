@@ -52,27 +52,27 @@
 						<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
 
 						<div class="form-outline mb-4">
-								<input type="text" name="first_name" class="form-control" id="register_first_name" />
+								<input type="text" name="first_name" class="form-control" id="register_first_name" placeholder="Enter first name" />
 								<label class="form-label">First Name</label>
 						</div>
 						<div class="form-outline mb-4">
-								<input type="text" name="last_name" class="form-control" id="register_last_name" />
+								<input type="text" name="last_name" class="form-control" id="register_last_name" placeholder="Enter last name" />
 							<label class="form-label">Last Name</label>
 						</div>
 						<div class="form-outline mb-4">
-								<input type="text" name="email" class="form-control" id="register_email" />
+								<input type="text" name="email" class="form-control" id="register_email" placeholder="Enter a valid email address" />
 							<label class="form-label">Email</label>
 						</div>
 						<div class="form-outline mb-4">
-								<input type="password" name="password" class="form-control" id="register_password" />
+								<input type="password" name="password" class="form-control" id="register_password" placeholder="Enter password" />
 							<label class="form-label">Password</label>
 						</div>
 						<div class="form-outline mb-4">
-								<input type="password" name="confirm_password" class="form-control" id="register_password_confirmation" />
+								<input type="password" name="confirm_password" class="form-control" id="register_password_confirmation" placeholder="Enter password confirmation" />
 							<label class="form-label">Confirm Password</label>
 						</div>
 						<div class="text-center text-lg-start mt-4 pt-2">
-							<button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Register</button>
+							<button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" id="register_user_trigger">Register</button>
 							<p class="small fw-bold mt-2 pt-1 mb-0">already have an account? <p class="link-danger show_login_signup_form" data-form_action="show_sign_form">Sign in</p></p>
 						</div>
 				</form>

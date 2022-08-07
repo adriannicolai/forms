@@ -1,7 +1,10 @@
 $(document).ready(function(){
     $(document)
-        .on("click", "#login_user_trigger", function(){                        /* Trigger to submit the log in user form */
+        .on("click", "#login_user_trigger", () => {                        /* Trigger to submit the log in user form */
             $("#login_user_form").submit();
+        })
+        .on("click", "#register_user_trigger", () =>{
+            $("#register_user_form").submit();
         })
         .on("click", ".show_login_signup_form", showHideLoginOrRegisterForm);   /* Trigger to show the sign up or signin form */
 
