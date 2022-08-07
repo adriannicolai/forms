@@ -3,6 +3,11 @@
     padding: 0px;
     box-sizing: border-box;
 }
+
 .hidden{
     display: none;
+}
+
+.dropdown-toggle::after{
+    content: none !important;
 }
