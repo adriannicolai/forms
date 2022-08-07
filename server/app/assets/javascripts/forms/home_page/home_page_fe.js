@@ -1,6 +1,9 @@
 $(document).ready(function(){
     $(document)
-        .on("click", ".delete_form_trigger", triggerSubmitDeleteForm);  /* This function will trigger the submission of the delete form */
+        .on("click", ".delete_form_trigger", triggerSubmitDeleteForm)  /* This function will trigger the submission of the delete form */
+        .on("click",".card", function(){
+            window.open(`/forms/view?id=${$(this).data("ecrypted_form_id")}`, "_blank");
+        });
 });
 
 
