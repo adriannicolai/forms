@@ -1,8 +1,8 @@
 $(document).ready(function(){
     $(document)
         .on("click", ".delete_form_trigger", triggerSubmitDeleteForm)  /* This function will trigger the submission of the delete form */
-        .on("click",".card", function(){
-            window.open(`/forms/view?id=${$(this).data("ecrypted_form_id")}`, "_blank");
+        .on("click",".card_clickable_area", function(){
+            window.open(`/forms/view?id=${$(this).parent("div").data("ecrypted_form_id")}`, "_blank");
         });
 });
 
@@ -15,9 +15,10 @@ $(document).ready(function(){
 */
 function triggerSubmitDeleteForm(){
     let delete_form = $("#delete_form");
-    let form_card   = $(this).parent("div");
+    let form_card = $(this).closest("div.form_card_container");
 
     /* Add the data needed by the back end */
+    console.log(form_card.length);
     delete_form.children(".form_id").val(form_card.data("ecrypted_form_id"));
 
     /* Add identifier for what form_card should be deleted */
