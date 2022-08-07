@@ -7,7 +7,7 @@ $(document).ready(function(){
 /**
 * DOCU: This function is for submitting the register user form<br>
 * Triggered: .on("submit", "#register_user_form", submitRegisterUserForm)<br>
-* Last Updated Date: July 28, 2022
+* Last Updated Date: August 7, 2022
 * @author Adrian
 */
 function submitRegisterUserForm(e){
@@ -22,7 +22,6 @@ function submitRegisterUserForm(e){
         $.post(register_user_form.attr("action"), register_user_form.serialize(), function(register_form_response){
             if(register_form_response.status){
                 window.open("/forms","_self");
-
             }
             else{
                 /* TODO: add error handling here */
