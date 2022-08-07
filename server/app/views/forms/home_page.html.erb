@@ -1,36 +1,40 @@
-<input type="text" placeholder="Search" id="search_text_box">
+<%= render :partial => 'forms/partials/global_partials/header_partial' %>
+<div class="container">
+    <input type="text" placeholder="Search" id="search_text_box">
 
-<select name="form_sort_order" id="form_sort_order">
-    <option value="title">Title</option>
-    <option value="date_created">Date Created</option>
-</select>
+    <select name="form_sort_order" id="form_sort_order">
+        <option value="title">Title</option>
+        <option value="date_created">Date Created</option>
+    </select>
 
-<select name="form_number_of_page" id="form_number_of_page">
-    <option value="10">10</option>
-    <option value="20">20</option>
-    <option value="50">50</option>
-</select>
+    <select name="form_number_of_page" id="form_number_of_page">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+    </select>
 
-<button id="add_form_button">Add new form</button>
+    <button id="add_form_button">Add new form</button>
 
-<a href="/logout"> Log out </a>
-<div class="forms_container">
-<% if @forms[:status] && @forms[:result].length > 0 %>
-    <% @forms[:result].each do |form| %>
-        <%= render :partial => "/forms/partials/form_card", :locals => {:form => form} %>
+    <a href="/logout"> Log out </a>
+    <div class="container forms_container">
+    <% if @forms[:status] && @forms[:result].length > 0 %>
+        <% @forms[:result].each do |form| %>
+            <%= render :partial => "/forms/partials/form_card", :locals => {:form => form} %>
+        <% end %>
     <% end %>
-<% end %>
+    </div>
+
+    <form action="/forms/get_forms" method="POST" data-is_processing="0" id="get_all_forms">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+    </form>
+
+    <form action="/forms/create_form" method="POST" data-is_processing="0" id="create_form">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+    </form>
+
+    <form action="/forms/delete_form" method="POST" data-is_processing="0" id="delete_form">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+        <input type="hidden" name="form_id" class="form_id">
+    </form>
+
 </div>
-
-<form action="/forms/get_forms" method="POST" data-is_processing="0" id="get_all_forms">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-</form>
-
-<form action="/forms/create_form" method="POST" data-is_processing="0" id="create_form">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-</form>
-
-<form action="/forms/delete_form" method="POST" data-is_processing="0" id="delete_form">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-    <input type="hidden" name="form_id" class="form_id">
-</form>
