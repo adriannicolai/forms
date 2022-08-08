@@ -7,8 +7,14 @@
             </div>
         </div>
         <div class="card-footer">
-        <button class="delete_form_trigger">Delete Form</button>
             <p><%= form["number_of_responses"] %>  <%= "response".pluralize(form["number_of_responses"] === 0 ? 1 : form["number_of_responses"] ) %></p>
+            <div class="more_actions_group dropright">
+                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><span class="templates_page_sprite more_action_sprite"></span>⋮</button>
+                <div class="dropdown-menu template_other">
+                    <a class="dropdown-item more_actions_btn"><span class="templates_page_sprite edit_icon_sprite"></span>Edit</a>
+                    <button type="button" class="dropdown-item delete_form_trigger">Delete</button>
+                </div>
+            </div>
         </div>
     </div>
 <% end %>
