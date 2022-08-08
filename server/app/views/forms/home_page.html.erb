@@ -1,21 +1,6 @@
 <%= render :partial => 'forms/partials/global_partials/header_partial' %>
+<%= render :partial => 'forms/partials/form_search_query_settings_partial' %>
 <div class="container">
-    <input type="text" placeholder="Search" id="search_text_box">
-
-    <select name="form_sort_order" id="form_sort_order">
-        <option value="title">Title</option>
-        <option value="date_created">Date Created</option>
-    </select>
-
-    <select name="form_number_of_page" id="form_number_of_page">
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-    </select>
-
-    <button id="add_form_button">Add new form</button>
-
-    <a href="/logout"> Log out </a>
     <div class="container forms_container">
     <% if @forms[:status] && @forms[:result].length > 0 %>
         <% @forms[:result].each do |form| %>
