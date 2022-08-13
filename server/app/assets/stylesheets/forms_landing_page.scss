@@ -1,3 +1,8 @@
-form{
-    padding: 20px;
+div.container{
+    form{
+        padding: 20px;
+    }
+    form.input{
+        outline: var(--outline_hue);
+    }
 }
