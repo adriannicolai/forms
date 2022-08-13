@@ -1,0 +1,22 @@
+.form_header{
+    max-height: 70px !important;
+    align-items: center;
+    *{
+        padding: 0px;
+    }
+    button:focus, button:hover {
+        background: #0d6efd !important;
+        outline: none !important;
+        border: none !important;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        -webkit-appearance: none;
+    }
+    div.dropdown-menu{
+        right: 0;
+        left: auto;
+    }
+    img{
+        width: 60px;
+    };
+}

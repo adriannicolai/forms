@@ -15,3 +15,20 @@
  */
 
 @import "bootstrap";
+
+/*  Declare global variables for color here
+    Some good color schemes here: https: //visme.co/blog/website-color-schemes/
+*/
+
+:root{
+    --primary_hue: #0b0c10;
+    --secondary_hue: #1f2833;
+    --background_hue: #c5c6c7;
+    --secondary_background_hue: #66fcf1;
+    --outline_hue: #B1A296;
+}
+
+/**
+    To use these varialbles just declare it liek thhis in css
+    background: var(--primary_hue);
+*/

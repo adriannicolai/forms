@@ -36,7 +36,7 @@ function submitRegisterUserForm(e){
 /**
 * DOCU: This function is for submitting the login user form<br>
 * Triggered: .on("submit", "#login_user_form", submitLoginUserForm)<br>
-* Last Updated Date: July 28, 2022
+* Last Updated Date: Auugust 7, 2022
 * @author Adrian
 */
 function submitLoginUserForm(e){
@@ -48,13 +48,13 @@ function submitLoginUserForm(e){
     if(parseInt(login_user_form.data("is_processing")) === BOOLEAN_FIELD.no){
         login_user_form.data("is_processing", BOOLEAN_FIELD.yes);
 
-        $.post(login_user_form.attr("action"), login_user_form.serialize(), function(register_form_response){
-            if(register_form_response.status){
+        $.post(login_user_form.attr("action"), login_user_form.serialize(), function(login_user_response){
+            if(login_user_response.status){
                 window.open("/forms","_self");
             }
             else{
                 /* TODO: add error handling here */
-                alert(register_form_response.error);
+                alert(login_user_response.error);
             }
 
             login_user_form.data("is_processing", BOOLEAN_FIELD.no);

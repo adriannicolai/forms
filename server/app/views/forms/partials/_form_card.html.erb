@@ -1,9 +1,20 @@
 <% if form.present? %>
-    <div data-ecrypted_form_id="<%= encrypt(form["id"]) %>" class="form_card_container">
-        <p><%= form["title"] %></p>
-        <p><%= form["last_modified_date"] %></p>
-        <p><%= form["number_of_responses"] %>  <%= "response".pluralize(form["number_of_responses"] === 0 ? 1 : form["number_of_responses"] ) %></p>
-        <a href="/forms/view?id=<%= encrypt(form["id"]) %>">view form</a>
-        <button class="delete_form_trigger">Delete Form</button>
+    <div class="card form_card_container" data-ecrypted_form_id="<%= encrypt(form["id"]) %>">
+        <div class="card_clickable_area">
+            <div class="card-body">
+                <h5 class="card-title"><%= form["title"] %></h5>
+                <p><%= form["last_modified_date"] %></p>
+            </div>
+        </div>
+        <div class="card-footer">
+            <p><%= form["number_of_responses"] %>  <%= "response".pluralize(form["number_of_responses"] === 0 ? 1 : form["number_of_responses"] ) %></p>
+            <div class="more_actions_group dropright">
+                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><span class="templates_page_sprite more_action_sprite"></span>⋮</button>
+                <div class="dropdown-menu template_other">
+                    <a class="dropdown-item more_actions_btn"><span class="templates_page_sprite edit_icon_sprite"></span>Edit</a>
+                    <button type="button" class="dropdown-item delete_form_trigger">Delete</button>
+                </div>
+            </div>
+        </div>
     </div>
 <% end %>
