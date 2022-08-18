@@ -1,25 +1,30 @@
-.forms_container{
-    display: grid;
-
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
-    padding: 0 60px !important;
-    grid-gap: 20px;
-    .card{
-        max-height: 200px;
-        border-radius: 20px;
-        .card-footer{
-            max-height: 40px !important;
-            display: flex;
-            justify-content: space-between;
-            *{
-                padding: 0px !important;
-                margin: 0px !important;
+section.content_section{
+    display: inline-block;
+    position: relative;
+    width: auto;
+    .forms_container{
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+        // padding: 0 60px !important;
+        grid-gap: 20px;
+        .card{
+            max-height: 200px;
+            border-radius: 20px;
+            .card-footer{
+                max-height: 40px !important;
+                display: flex;
+                justify-content: space-between;
+                *{
+                    padding: 0px !important;
+                    margin: 0px !important;
+                }
             }
         }
-    }
-    .card:hover{
-        box-shadow: 0 0 15px rgba(82, 129, 232, 0.857);
-        cursor: pointer;
+        .card:hover{
+            box-shadow: 0 0 15px rgba(82, 129, 232, 0.857);
+            cursor: pointer;
+        }
     }
 }
 
