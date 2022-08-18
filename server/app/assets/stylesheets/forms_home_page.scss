@@ -1,12 +1,10 @@
 section.content_section{
-    display: inline-block;
-    position: relative;
-    width: auto;
+    flex-grow: 1;
+    padding: 20px;
     .forms_container{
         width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
-        // padding: 0 60px !important;
         grid-gap: 20px;
         .card{
             max-height: 200px;
