@@ -24,13 +24,20 @@ nav.form_header{
 }
 
 div.side_navigation_partial {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     max-width: 210px !important;
     width: 20%;
     height: 100%;
     background: var(--secondary_hue);
     aside{
-        /* TODO: add aside vavigation edits here*/
+        color: var(--text_in_dark_background);
+        ul{
+            padding: 0px;
+            li{
+                list-style-type: none;
+            }
+        }
     }
 }
 
