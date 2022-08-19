@@ -1,12 +1,18 @@
 <%= render :partial => 'forms/partials/global_partials/header_partial' %>
 <%= render :partial => 'forms/partials/form_search_query_settings_partial' %>
-<div class="container">
-    <div class="container forms_container">
-    <% if @forms[:status] && @forms[:result].length > 0 %>
-        <% @forms[:result].each do |form| %>
-            <%= render :partial => "/forms/partials/form_card", :locals => {:form => form} %>
-        <% end %>
-    <% end %>
+<div class="content_area">
+    <%= render :partial => 'forms/partials/global_partials/side_navigation_partial' %>
+
+    <section class="content_section">
+        <div class="forms_container">
+            <% if @forms[:status] && @forms[:result].length > 0 %>
+                <% @forms[:result].each do |form| %>
+                    <%= render :partial => "/forms/partials/form_card", :locals => {:form => form} %>
+                <% end %>
+            <% end %>
+        </div>
+    </section>
+
     </div>
 
     <form action="/forms/get_forms" method="POST" data-is_processing="0" id="get_all_forms">
@@ -21,5 +27,4 @@
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
         <input type="hidden" name="form_id" class="form_id">
     </form>
-
 </div>
