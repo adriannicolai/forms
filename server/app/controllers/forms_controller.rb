@@ -9,11 +9,11 @@ class FormsController < ApplicationController
     # DOCU: home page for forms
     # Triggered by: (GET) /forms
 	# Session - user_id
-    # Last updated at: July 24, 2022
+    # Last updated at: August 18, 2022
     # Owner: Adrian
 	def home_page
 		begin
-			@forms = Form.get_form_records({ :fields_to_filter => { :user_id => session[:user_id] }, :fields_to_select => "id, title, cache_response_count AS number_of_responses, updated_at AS last_modified_date" })
+			@forms = Form.get_form_records({ :fields_to_filter => { :user_id => session[:user_id] }, :fields_to_select => "id, title, cache_response_count AS number_of_responses, DATE_FORMAT(updated_at, '%b %d %Y') AS last_modified_date" })
 
 			raise @forms[:error] if (@forms[:error].present? && @forms[:error] != "Form not found")
 		rescue Exception => ex
