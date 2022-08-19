@@ -1,9 +1,16 @@
-  <form action="/forms/create_question" id="create_question_form" method="POST">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-    <input type="hidden" name="question_type" />
-    <input type="hidden" name="description" />
-    <input type="hidden" name="question_title" />
-    <input type="hidden" name="options[]" />
-</form>
+<%= render :partial => 'forms/partials/global_partials/header_partial' %>
 
-<a href="/forms">Go back</a>
+<div class="content_area">
+    <%= render :partial => 'forms/partials/global_partials/side_navigation_partial' %>
+    <section class="content_section">
+    <%= @form %>
+    </section>
+
+	<form action="/forms/create_question" class="hidden" id="create_question_form" method="POST">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+		<input type="hidden" name="question_type" />
+		<input type="hidden" name="description" />
+		<input type="hidden" name="question_title" />
+		<input type="hidden" name="options[]" />
+	</form>
+</div>

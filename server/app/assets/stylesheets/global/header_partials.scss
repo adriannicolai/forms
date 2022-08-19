@@ -1,4 +1,6 @@
-.form_header{
+nav.form_header{
+    color: #fff;
+    background-color: var(--primary_hue);
     max-height: 70px !important;
     align-items: center;
     *{
@@ -19,4 +21,27 @@
     img{
         width: 60px;
     };
+}
+
+div.side_navigation_partial {
+    display: flex;
+    flex-direction: column;
+    max-width: 210px !important;
+    width: 20%;
+    height: 100%;
+    background: var(--secondary_hue);
+    aside{
+        color: var(--text_in_dark_background);
+        ul{
+            padding: 0px;
+            li{
+                list-style-type: none;
+            }
+        }
+    }
+}
+
+div.content_area{
+    height: 100vh;
+    display: flex;
 }

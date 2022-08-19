@@ -1,4 +1,4 @@
-<nav class="navbar navbar-right bg-primary form_header">
+<nav class="navbar navbar-right form_header">
     <div class="container-fluid flex-row">
         <div class="navbar-brand">
             <img src="https://w7.pngwing.com/pngs/783/513/png-transparent-computer-icons-form-organization-internet-email-ticket-miscellaneous-text-service.png" alt="" class="rounded-pill" />
@@ -10,7 +10,7 @@
 
         <div class="btn-group profile_dropdown">
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><%= "#{session[:first_name]} #{session[:last_name]}" %></button>
+                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><%= "#{session[:first_name]} #{session[:last_name]}" %></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                     <button class="dropdown-item" type="button">Account Settings</button>
                     <a href="/logout" class="dropdown-item" type="button">Log out</a>
