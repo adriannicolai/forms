@@ -48,17 +48,46 @@ class Form < ApplicationRecord
         return response_data
     end
 
-    # DOCU: Method to get all form details with section and questions
+    # DOCU: Method to get all form details with sections and questions
     # Triggered by FormsController#view_form
 	# Requires: params - form_id
     # Returns: { status: true/false, result: form_details, error }
-    # Last updated at: July 24, 2022
+    # Last updated at: August 20, 2022
     # Owner: Adrian
     def self.get_form_details(params)
         response_data = { :status => false, :result => {}, :error => nil }
 
         begin
+            form_details = query_record([
+                "SELECT
+                    JSON_OBJECTAGG(
+                        form_section_id, form_question_details
+                    ) AS form_questions
+                FROM
+                (
+                    SELECT
+                        JSON_ARRAYAGG(
+                            JSON_OBJECT(
+                                'form_question_id', form_questions.id,
+                                'form_section_id', form_sections.id,
+                                'question_title', form_questions.title,
+                                'question_choices', form_questions.choices_json,
+                                'is_required_question', form_questions.is_required,
+                                'question_type_id', question_type_id
+                            )) AS form_question_details,
+                            form_sections.id AS form_section_id
+                        FROM form_sections
+                        INNER JOIN form_questions ON form_questions.form_section_id = form_sections.id
+                        WHERE form_sections.form_id = ?
+                        GROUP BY form_sections.id
+                ) AS form_details", params[:form_id] ])
 
+            if form_details["form_questions"].present?
+                response_data[:status] = true
+                response_data[:result] = JSON.parse(form_details["form_questions"])
+            else
+                raise "Cannot find form details."
+            end
         rescue Exception => ex
             response_data[:error] = ex.message
         end
