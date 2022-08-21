@@ -24,11 +24,11 @@ class FormsController < ApplicationController
 	# DOCU: Method for the view form page
     # Triggered by: (GET) /forms
 	# Session - user_id
-    # Last updated at: August 20, 2022
+    # Last updated at: August 21, 2022
     # Owner: Adrian
 	def view_form
 		begin
-			@form = Form.get_form_details( { :form_id => decrypt(params[:id]) })
+			@form = Form.get_form_details({ :form_id => decrypt(params[:id]) })
 
 			raise @form[:error] if !@form[:status]
 		rescue Exception => ex
@@ -36,13 +36,28 @@ class FormsController < ApplicationController
 		end
 	end
 
-	# DOCU: For fetching forms data
-    # Triggered by: (POST) /forms/get_forms
+	# DOCU: For fetching form data
+    # Triggered by: (POST) /forms/get_form
     # Returns: { status: true/false, result: { forms_data }, error }
-    # Last updated at: July 18, 2022
+    # Last updated at: August 21, 2022
     # Owner: Adrian
-	def get_forms
+	def get_form
+		response_data = { :status => false, :result => {}, :error => nil }
 
+		begin
+			# Check fields for getting form details
+			check_get_form_fields = check_fields(["form_id"], [], params)
+
+			if check_get_form_fields[:status]
+				form_details = Form.get_form_record({ :fields_to_select => "form_settings_json", :fields_to_filter => { :id => decrypt(params[:form_id]) }})
+			else
+				raise "An error occurred while getting form details."
+			end
+		rescue Exception => ex
+			response_data[:error] = ex.message
+		end
+
+		render :json => response_data
 	end
 
 	# DOCU: This will handle the creation of new forms
