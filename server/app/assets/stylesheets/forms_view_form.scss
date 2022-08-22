@@ -1,0 +1,24 @@
+.forms_navigation{
+    display: flex;
+    width: 100%;
+    outline: 1px solid black; /* Clear later*/
+    height: 40px;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    p:hover{
+        cursor: pointer;
+    }
+}
+
+section.content_section{
+    div.form_section{
+        width: 100%;
+        outline: 1px solid black; /* Clear later*/
+        margin-top: 20px;
+    }
+
+    button#add_question_trigger{
+        width: 100%;
+    }
+}
