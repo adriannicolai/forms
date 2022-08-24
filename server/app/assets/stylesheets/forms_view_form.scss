@@ -12,10 +12,15 @@
 }
 
 section.content_section{
+    div.form_question_area, div.form_title_area{
+        display: block;
+        margin-bottom: 20px;
+    }
     div.form_section{
         width: 100%;
         outline: 1px solid black; /* Clear later*/
         margin-top: 20px;
+        padding: 10px;
     }
 
     button#add_question_trigger{
