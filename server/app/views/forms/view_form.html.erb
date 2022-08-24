@@ -3,8 +3,28 @@
 <div class="content_area">
     <%= render :partial => 'forms/partials/global_partials/side_navigation_partial' %>
     <section class="content_section">
-    <%= @form %>
+		<div class="forms_navigation">
+			<p>Questions</p>
+			<p>Responses</p>
+			<p>Settings</p>
+		</div>
+
+		<div class="form_section">
+			<div class="form_details_area">
+			</div>
+		</div>
+
+		<div class="form_section">
+			<button id="add_question_trigger">Add question</button>
+		</div>
+
     </section>
+
+	<form action="/forms/update_form" class="hidden" id="update_form" method="POST">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+		<input type="hidden" name="update_type" />
+		<input type="hidden" name="">
+	</form>
 
 	<form action="/forms/create_question" class="hidden" id="create_question_form" method="POST">
 		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
