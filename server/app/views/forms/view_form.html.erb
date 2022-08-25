@@ -3,8 +3,95 @@
 <div class="content_area">
     <%= render :partial => 'forms/partials/global_partials/side_navigation_partial' %>
     <section class="content_section">
-    <%= @form %>
+		<div class="forms_navigation">
+			<p>Questions</p>
+			<p>Responses</p>
+			<p>Settings</p>
+		</div>
+
+		<div class="form_section">
+			<div class="form_title_area">
+				<input type="text" placeholder="Untitled Form" />
+				<input type="description" placeholder="Description" />
+			</div>
+		</div>
+
+		<div class="form_section" data-section_id="1">
+			<div class="form_question_area" data-question_id="1">
+				<div class="form_settings">
+					<input type="text" name="question" placeholder="Unntitled question" class="form_question_title" />
+
+					<select class="form-select" class="form_question_type">
+						<option selected>Multiple Choice</option>
+						<option>Paragraph</option>
+						<option>Checkbox</option>
+						<option>Dropdown</option>
+					</select>
+				</div>
+
+				<div class="option_list">
+					<input type="text" name="options[]" placeholder="Option" class="options" />
+				</div>
+			</div>
+
+			<div class="form_question_area" data-question_id="2">
+				<input type="text" name="question" placeholder="Unntitled question" class="form_question_title" />
+				<select class="form-select" class="form_question_type">
+					<option>Multiple Choice</option>
+					<option selected>Paragraph</option>
+					<option>Checkbox</option>
+					<option>Dropdown</option>
+				</select>
+				<div class="option_list">
+					<input type="text" placeholder="Paragraph text">
+				</div>
+			</div>
+		</div>
+
+		<div class="form_section" data-section_id="2">
+			<div class="form_question_area" data-question_id="3">
+				<input type="text" name="question" placeholder="Unntitled question" class="form_question_title"/>
+				<select class="form-select" class="form_question_type">
+					<option>Multiple Choice</option>
+					<option>Paragraph</option>
+					<option selected>Checkbox</option>
+					<option>Dropdown</option>
+				</select>
+				<div class="option_list">
+					<input type="text" name="options[]" placeholder="Option" class="options" />
+					<input type="text" name="options[]" placeholder="Option" class="options" />
+					<input type="text" name="options[]" placeholder="Option" class="options" />
+				</div>
+			</div>
+
+			<div class="form_question_area" data-question_id="4">
+				<input type="text" name="question" placeholder="Unntitled question" class="form_question_title" />
+				<select class="form-select" class="form_question_type">
+					<option>Multiple Choice</option>
+					<option>Paragraph</option>
+					<option>Checkbox</option>
+					<option selected>Dropdown</option>
+				</select>
+				<div class="option_list">
+					<input type="text" name="options[]" placeholder="Option" class="options" />
+					<input type="text" name="options[]" placeholder="Option" class="options" />
+					<input type="text" name="options[]" placeholder="Option" class="options" />
+					<input type="text" name="options[]" placeholder="Option" class="options" />
+				</div>
+			</div>
+		</div>
+
+		<div class="form_section">
+			<button id="add_question_trigger">Add question</button>
+		</div>
+
     </section>
+
+	<form action="/forms/update_form" class="hidden" id="update_form" method="POST">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+		<input type="hidden" name="update_type" />
+		<input type="hidden" name="">
+	</form>
 
 	<form action="/forms/create_question" class="hidden" id="create_question_form" method="POST">
 		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
