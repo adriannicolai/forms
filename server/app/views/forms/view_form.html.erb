@@ -5,7 +5,7 @@
     <section class="content_section">
 		<div class="forms_navigation">
 			<p>Questions</p>
-			<p>Responses</p>
+			<p>Responsehahaa</p>
 			<p>Settings</p>
 		</div>
 
@@ -15,6 +15,16 @@
 				<input type="description" placeholder="Description" />
 			</div>
 		</div>
+		
+		<%# Iterate the form sections %>
+		<% @form[:result].each do |key, form| %>
+			<div class="form_section" data-section_id="<%= key %>">
+			<% @form[:result][key].each do |form_question| %>
+				<%= render :partial => get_form_question_partial_name(form_question["question_type_id"]), :locals => {:form_question => form_question} %>
+				<%#= get_form_question_partial_name(form_question["question_type_id"]) %>
+			<% end %>
+			</div>
+		<% end %>
 
 		<div class="form_section" data-section_id="1">
 			<div class="form_question_area" data-question_id="1">
@@ -35,21 +45,7 @@
 			</div>
 
 
-			<div class="form_question_area" data-question_id="3">
-				<div class="form_question_settings">
-					<input type="text" name="question" placeholder="Unntitled question" class="form_question_title"/>
 
-					<select class="form-select" class="form_question_type">
-						<option>Multiple Choice</option>
-						<option selected>Paragraph</option>
-						<option>Checkbox</option>
-						<option>Dropdown</option>
-					</select>
-				</div>
-				<div class="option_list">
-					<input type="text" name="paragraph_text" placeholder="paragraph_text" />
-				</div>
-			</div>
 		</div>
 
 		<div class="form_section" data-section_id="2">
