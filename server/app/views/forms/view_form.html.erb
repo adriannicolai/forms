@@ -21,32 +21,11 @@
 			<div class="form_section" data-section_id="<%= key %>">
 			<% @form[:result][key].each do |form_question| %>
 				<%= render :partial => get_form_question_partial_name(form_question["question_type_id"]), :locals => {:form_question => form_question} %>
-				<%#= get_form_question_partial_name(form_question["question_type_id"]) %>
+				<%= get_form_question_partial_name(form_question["question_type_id"]) %>
 			<% end %>
+				<button id="add_question_trigger">Add question</button>
 			</div>
 		<% end %>
-
-		<div class="form_section" data-section_id="1">
-			<div class="form_question_area" data-question_id="1">
-				<div class="form_question_settings">
-					<input type="text" name="question" placeholder="Unntitled question" class="form_question_title" />
-
-					<select class="form-select" class="form_question_type">
-						<option selected>Multiple Choice</option>
-						<option>Paragraph</option>
-						<option>Checkbox</option>
-						<option>Dropdown</option>
-					</select>
-				</div>
-
-				<div class="option_list">
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-				</div>
-			</div>
-
-
-
-		</div>
 
 		<div class="form_section" data-section_id="2">
 			<div class="form_question_area" data-question_id="3">
@@ -66,29 +45,6 @@
 					<input type="text" name="options[]" placeholder="Option" class="options" />
 				</div>
 			</div>
-
-			<div class="form_question_area" data-question_id="4">
-				<div class="form_question_settings">
-					<input type="text" name="question" placeholder="Unntitled question" class="form_question_title" />
-
-					<select class="form-select" class="form_question_type">
-						<option>Multiple Choice</option>
-						<option>Paragraph</option>
-						<option>Checkbox</option>
-						<option selected>Dropdown</option>
-					</select>
-				</div>
-				<div class="option_list">
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-				</div>
-			</div>
-		</div>
-
-		<div class="form_section">
-			<button id="add_question_trigger">Add question</button>
 		</div>
 
     </section>
