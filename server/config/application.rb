@@ -29,6 +29,7 @@ module FormsClone
 
   # Add hosts here
   # config.hosts << "cef5-175-176-7-128.ap.ngrok.io"
+  config.hosts << "forms_clone.localhost.com"
 
   # Auto delete tmp files
   config.middleware.use Rack::TempfileReaper

@@ -16,6 +16,12 @@ section.content_section{
         display: block;
         margin-bottom: 20px;
     }
+        div.form_question_area{
+            background-color: var(--secondary_background_hue);
+            div.form_question_settings{
+                display: flex;
+            }
+        }
     div.form_section{
         width: 100%;
         outline: 1px solid black; /* Clear later*/

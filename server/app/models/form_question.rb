@@ -52,11 +52,30 @@ class FormQuestion < ApplicationRecord
         return response_data
     end
 
+    # DOCU: Method to prepare the update query of update question
+    # Triggered by FormsController#view_form
+	# Requires: params - form_id, question_type_id, title
+    # Optionals: params - choices, answer
+    # Returns: { status: true/false, result: form_details,error }
+    # Last updated at: July 26, 2022
+    # Owner: Adrian
+    def self.update_form_detail(params)
+        response_data = { :status => false, :result => {}, :error => nil }
+
+        begin
+            
+        rescue Exception => ex
+            response_data[:error] = ex.message
+        end
+
+        return response_data
+    end
+
     private
         # DOCU: Method to delete a question dynamically
         # Triggered by FormsController, FormQuestion
         # Requires: params - fields_to_filter
-        # Returns: { status: true/false, result: form_details,error }
+        # Returns: { status: true/false, result: form_details, error }
         # Last updated at: July 27, 2022
         # Owner: Adrian
         def self.delete_form_question(params)
@@ -73,6 +92,34 @@ class FormQuestion < ApplicationRecord
                 end
 
                 response_data.merge!(delete_record(delete_form_record_query).present? ? { :status => true } : { :error => "error in deletinng form_question, Please try again later" })
+            rescue Exception => ex
+                response_data[:error] = ex.message
+            end
+
+            return response_data
+        end
+
+        # DOCU: Method to update form question
+        # Triggered by FormsController#update_question
+        # Requires: params - fields_to_update, fields_to_filter
+        # Returns: { status: true/false, result: {}, error }
+        # Last updated at: August 25, 2022
+        # Owner: Adrian
+        def self.update_form_question_details(params)
+            response_data = { :status => false, :result => {}, :error => nil }
+
+            begin
+                update_form_question_query = ["
+                    UPDATE SET #{params[:fields_to_update].map{ |field, value|} "#{field}= '#{ActiveRecord::Base.sanitize_sql(value)}'" }
+                    WHERE
+                "]
+
+                params[:fields_to_update].each_with_index do |(field, value), index|
+                    update_form_question_query[0] += "#{' AND' if index > 0} #{field} #{field.is_a?(Array) ? 'IN(?)' : '=?'}"
+                    update_form_question_query    << value
+                end
+
+                response_data.merge!(update_record(update_form_question_query).present? ? { :status => true } : { :error => "Error in updating form question. Please try again later." })
             rescue Exception => ex
                 response_data[:error] = ex.message
             end
