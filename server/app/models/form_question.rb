@@ -52,6 +52,25 @@ class FormQuestion < ApplicationRecord
         return response_data
     end
 
+    # DOCU: Method to prepare the update query of update question
+    # Triggered by FormsController#view_form
+	# Requires: params - form_id, question_type_id, title
+    # Optionals: params - choices, answer
+    # Returns: { status: true/false, result: form_details,error }
+    # Last updated at: July 26, 2022
+    # Owner: Adrian
+    def self.update_form_detail(params)
+        response_data = { :status => false, :result => {}, :error => nil }
+
+        begin
+            
+        rescue Exception => ex
+            response_data[:error] = ex.message
+        end
+
+        return response_data
+    end
+
     private
         # DOCU: Method to delete a question dynamically
         # Triggered by FormsController, FormQuestion
