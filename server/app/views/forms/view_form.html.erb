@@ -27,26 +27,6 @@
 			</div>
 		<% end %>
 
-		<div class="form_section" data-section_id="2">
-			<div class="form_question_area" data-question_id="3">
-				<div class="form_question_settings">
-					<input type="text" name="question" placeholder="Unntitled question" class="form_question_title"/>
-
-					<select class="form-select" class="form_question_type">
-						<option>Multiple Choice</option>
-						<option>Paragraph</option>
-						<option selected>Checkbox</option>
-						<option>Dropdown</option>
-					</select>
-				</div>
-				<div class="option_list">
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-				</div>
-			</div>
-		</div>
-
     </section>
 
 	<form action="/forms/update_form" class="hidden" id="update_form" method="POST">
