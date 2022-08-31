@@ -15,7 +15,7 @@
 				<input type="description" placeholder="Description" />
 			</div>
 		</div>
-		
+
 		<%# Iterate the form sections %>
 		<% @form[:result].each do |key, form| %>
 			<div class="form_section" data-section_id="<%= key %>">
@@ -37,9 +37,9 @@
 		<input type="hidden" name="update_type" />
 		<input type="hidden" name="">
 	</form>
-
+	<h1><%= params %></h1>
 	<form action="/forms/create_question" class="hidden" id="create_question_form" method="POST">
 		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-		<input type="hidden" name="form_id" value="<%= @form_settings[:result]["id"] %>">
+		<input type="hidden" name="form_id" value="<%= params["id"] %>">
 	</form>
 </div>

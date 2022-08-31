@@ -24,19 +24,14 @@ class FormsController < ApplicationController
 	# DOCU: Method for the view form page
     # Triggered by: (GET) /forms
 	# Session - user_id
-    # Last updated at: August 21, 2022
+    # Last updated at: August 31, 2022
     # Owner: Adrian
 	def view_form
 		begin
 			# Decrypt the form id
-			form_id = decrypt(params[:id])
-
-			@form_settings = Form.get_form_record({:fields_to_filter => {:id => form_id }})
-			@form 		   = Form.get_form_details({ :form_id => form_id })
-
+			@form = Form.get_form_details({ :form_id => decrypt(params[:id]) })
 
 			raise @form[:error] if !@form[:status]
-			raise @form_settings[:error] if !@form_settings[:status]
 		rescue Exception => ex
 			redirect_to_404
 		end
