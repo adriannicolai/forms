@@ -24,10 +24,11 @@ class FormsController < ApplicationController
 	# DOCU: Method for the view form page
     # Triggered by: (GET) /forms
 	# Session - user_id
-    # Last updated at: August 21, 2022
+    # Last updated at: August 31, 2022
     # Owner: Adrian
 	def view_form
 		begin
+			# Decrypt the form id
 			@form = Form.get_form_details({ :form_id => decrypt(params[:id]) })
 
 			raise @form[:error] if !@form[:status]
@@ -73,6 +74,18 @@ class FormsController < ApplicationController
 			create_form = Form.create_form(params.merge!({ :user_id => session[:user_id] }))
 
 			response_data.merge!(create_form)
+		rescue Exception => ex
+			response_data[:error] = ex.message
+		end
+
+		render :json => response_data
+	end
+
+	def create_question
+		response_data = { :status => false, :result => {}, :error => nil }
+
+		begin
+			create_queustion = FormQuestion.create_form_question
 		rescue Exception => ex
 			response_data[:error] = ex.message
 		end

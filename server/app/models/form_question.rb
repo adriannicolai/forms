@@ -3,11 +3,11 @@ include QueryHelper
 
 class FormQuestion < ApplicationRecord
     # DOCU: Method to get all form details with section and questions
-    # Triggered by FormsController#view_form
+    # Triggered by FormsController#create_form
 	# Requires: params - form_id, question_type_id, title
     # Optionals: params - choices
     # Returns: { status: true/false, result: form_details,error }
-    # Last updated at: July 26, 2022
+    # Last updated at: August 31, 2022
     # Owner: Adrian
     def self.create_form_question(params)
         response_data = { :status => false, :result => {}, :error => nil }
@@ -41,7 +41,6 @@ class FormQuestion < ApplicationRecord
                 else
                     response_data[:error] = "Error in creating form question, Please try again later"
                 end
-                response_data.merge!(create_form_question.present? ? { :status => true, :result => { :question_id => create_form_question} } : { :error => "" })
             else
                 response_data.merge!(check_form_question_params)
             end
@@ -110,7 +109,7 @@ class FormQuestion < ApplicationRecord
 
             begin
                 update_form_question_query = ["
-                    UPDATE SET #{params[:fields_to_update].map{ |field, value|} "#{field}= '#{ActiveRecord::Base.sanitize_sql(value)}'" }
+                    UPDATE SET #{params[:fields_to_update].map{ |field, value| "#{field}= '#{ActiveRecord::Base.sanitize_sql(value)}'" }.join(",") }
                     WHERE
                 "]
 

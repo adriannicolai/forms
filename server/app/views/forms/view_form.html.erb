@@ -5,7 +5,7 @@
     <section class="content_section">
 		<div class="forms_navigation">
 			<p>Questions</p>
-			<p>Responses</p>
+			<p>Responsehahaa</p>
 			<p>Settings</p>
 		</div>
 
@@ -16,83 +16,18 @@
 			</div>
 		</div>
 
-		<div class="form_section" data-section_id="1">
-			<div class="form_question_area" data-question_id="1">
-				<div class="form_question_settings">
-					<input type="text" name="question" placeholder="Unntitled question" class="form_question_title" />
-
-					<select class="form-select" class="form_question_type">
-						<option selected>Multiple Choice</option>
-						<option>Paragraph</option>
-						<option>Checkbox</option>
-						<option>Dropdown</option>
-					</select>
-				</div>
-
-				<div class="option_list">
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-				</div>
+		<%# Iterate the form sections %>
+		<% @form[:result].each do |key, form| %>
+			<div class="form_section" data-section_id="<%= key %>">
+			<% @form[:result][key].each do |form_question| %>
+				<%= render :partial => get_form_question_partial_name(form_question["question_type_id"]), :locals => {:form_question => form_question} %>
+			<% end %>
+				<button class="add_question_trigger">Add question</button>
 			</div>
-
-
-			<div class="form_question_area" data-question_id="3">
-				<div class="form_question_settings">
-					<input type="text" name="question" placeholder="Unntitled question" class="form_question_title"/>
-
-					<select class="form-select" class="form_question_type">
-						<option>Multiple Choice</option>
-						<option selected>Paragraph</option>
-						<option>Checkbox</option>
-						<option>Dropdown</option>
-					</select>
-				</div>
-				<div class="option_list">
-					<input type="text" name="paragraph_text" placeholder="paragraph_text" />
-				</div>
-			</div>
-		</div>
-
-		<div class="form_section" data-section_id="2">
-			<div class="form_question_area" data-question_id="3">
-				<div class="form_question_settings">
-					<input type="text" name="question" placeholder="Unntitled question" class="form_question_title"/>
-
-					<select class="form-select" class="form_question_type">
-						<option>Multiple Choice</option>
-						<option>Paragraph</option>
-						<option selected>Checkbox</option>
-						<option>Dropdown</option>
-					</select>
-				</div>
-				<div class="option_list">
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-				</div>
-			</div>
-
-			<div class="form_question_area" data-question_id="4">
-				<div class="form_question_settings">
-					<input type="text" name="question" placeholder="Unntitled question" class="form_question_title" />
-
-					<select class="form-select" class="form_question_type">
-						<option>Multiple Choice</option>
-						<option>Paragraph</option>
-						<option>Checkbox</option>
-						<option selected>Dropdown</option>
-					</select>
-				</div>
-				<div class="option_list">
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-					<input type="text" name="options[]" placeholder="Option" class="options" />
-				</div>
-			</div>
-		</div>
+		<% end %>
 
 		<div class="form_section">
-			<button id="add_question_trigger">Add question</button>
+			<button id="add_section_trigger">Add section</button>
 		</div>
 
     </section>
@@ -102,12 +37,9 @@
 		<input type="hidden" name="update_type" />
 		<input type="hidden" name="">
 	</form>
-
+	<h1><%= params %></h1>
 	<form action="/forms/create_question" class="hidden" id="create_question_form" method="POST">
 		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-		<input type="hidden" name="question_type" />
-		<input type="hidden" name="description" />
-		<input type="hidden" name="question_title" />
-		<input type="hidden" name="options[]" />
+		<input type="hidden" name="form_id" value="<%= params["id"] %>">
 	</form>
 </div>
