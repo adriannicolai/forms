@@ -28,9 +28,15 @@ class FormsController < ApplicationController
     # Owner: Adrian
 	def view_form
 		begin
-			@form = Form.get_form_details({ :form_id => decrypt(params[:id]) })
+			# Decrypt the form id
+			form_id = decrypt(params[:id])
+
+			@form_settings = Form.get_form_record({:fields_to_filter => {:id => form_id }})
+			@form 		   = Form.get_form_details({ :form_id => form_id })
+
 
 			raise @form[:error] if !@form[:status]
+			raise @form_settings[:error] if !@form_settings[:status]
 		rescue Exception => ex
 			redirect_to_404
 		end
@@ -73,6 +79,18 @@ class FormsController < ApplicationController
 			create_form = Form.create_form(params.merge!({ :user_id => session[:user_id] }))
 
 			response_data.merge!(create_form)
+		rescue Exception => ex
+			response_data[:error] = ex.message
+		end
+
+		render :json => response_data
+	end
+
+	def create_question
+		response_data = { :status => false, :result => {}, :error => nil }
+
+		begin
+			create_queustion = FormQuestion.create_form_question
 		rescue Exception => ex
 			response_data[:error] = ex.message
 		end
