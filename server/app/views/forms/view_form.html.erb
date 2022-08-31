@@ -26,6 +26,10 @@
 			</div>
 		<% end %>
 
+		<div class="form_section">
+			<button id="add_section_trigger">Add section</button>
+		</div>
+
     </section>
 
 	<form action="/forms/update_form" class="hidden" id="update_form" method="POST">
@@ -36,9 +40,6 @@
 
 	<form action="/forms/create_question" class="hidden" id="create_question_form" method="POST">
 		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-		<input type="hidden" name="question_type" />
-		<input type="hidden" name="description" />
-		<input type="hidden" name="question_title" />
-		<input type="hidden" name="options[]" />
+		<input type="hidden" name="form_id" value="<%= @form_settings[:result]["id"] %>">
 	</form>
 </div>
