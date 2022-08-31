@@ -21,7 +21,6 @@
 			<div class="form_section" data-section_id="<%= key %>">
 			<% @form[:result][key].each do |form_question| %>
 				<%= render :partial => get_form_question_partial_name(form_question["question_type_id"]), :locals => {:form_question => form_question} %>
-				<%= get_form_question_partial_name(form_question["question_type_id"]) %>
 			<% end %>
 				<button id="add_question_trigger">Add question</button>
 			</div>
