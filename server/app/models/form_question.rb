@@ -3,11 +3,11 @@ include QueryHelper
 
 class FormQuestion < ApplicationRecord
     # DOCU: Method to get all form details with section and questions
-    # Triggered by FormsController#view_form
+    # Triggered by FormsController#create_form
 	# Requires: params - form_id, question_type_id, title
     # Optionals: params - choices
     # Returns: { status: true/false, result: form_details,error }
-    # Last updated at: July 26, 2022
+    # Last updated at: August 31, 2022
     # Owner: Adrian
     def self.create_form_question(params)
         response_data = { :status => false, :result => {}, :error => nil }
@@ -35,13 +35,13 @@ class FormQuestion < ApplicationRecord
 
                     if add_question_id_on_form_sections.present?
                         response_data[:status] = true
+                        form
                     else
                         raise "Error in adding form_question_ids, Please try again later"
                     end
                 else
                     response_data[:error] = "Error in creating form question, Please try again later"
                 end
-                response_data.merge!(create_form_question.present? ? { :status => true, :result => { :question_id => create_form_question} } : { :error => "" })
             else
                 response_data.merge!(check_form_question_params)
             end
