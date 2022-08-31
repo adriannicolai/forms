@@ -22,7 +22,7 @@
 			<% @form[:result][key].each do |form_question| %>
 				<%= render :partial => get_form_question_partial_name(form_question["question_type_id"]), :locals => {:form_question => form_question} %>
 			<% end %>
-				<button id="add_question_trigger">Add question</button>
+				<button class="add_question_trigger">Add question</button>
 			</div>
 		<% end %>
 
