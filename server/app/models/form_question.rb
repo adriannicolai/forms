@@ -35,7 +35,6 @@ class FormQuestion < ApplicationRecord
 
                     if add_question_id_on_form_sections.present?
                         response_data[:status] = true
-                        form
                     else
                         raise "Error in adding form_question_ids, Please try again later"
                     end
@@ -110,7 +109,7 @@ class FormQuestion < ApplicationRecord
 
             begin
                 update_form_question_query = ["
-                    UPDATE SET #{params[:fields_to_update].map{ |field, value|} "#{field}= '#{ActiveRecord::Base.sanitize_sql(value)}'" }
+                    UPDATE SET #{params[:fields_to_update].map{ |field, value| "#{field}= '#{ActiveRecord::Base.sanitize_sql(value)}'" }.join(",") }
                     WHERE
                 "]
 
