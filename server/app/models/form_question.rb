@@ -18,6 +18,7 @@ class FormQuestion < ApplicationRecord
             check_form_question_params = check_fields(["form_id", "form_section_id", "question_type_id", "title"], [], params)
 
             if check_form_question_params[:status]
+                # Create a new form question
                 create_form_question = insert_record(["
                     INSERT INTO form_questions (form_id, form_section_id, question_type_id, title, is_required, created_at, updated_at)
                     VALUES (?, ?, ?, ?, ?, NOW(), NOW())
@@ -35,6 +36,7 @@ class FormQuestion < ApplicationRecord
 
                     if add_question_id_on_form_sections.present?
                         response_data[:status] = true
+                        response_data[:result] = self.get_form_question_record({:fields_to_filter => {:id => create_form_question}})[:result]
                     else
                         raise "Error in adding form_question_ids, Please try again later"
                     end
@@ -121,6 +123,44 @@ class FormQuestion < ApplicationRecord
                 response_data.merge!(update_record(update_form_question_query).present? ? { :status => true } : { :error => "Error in updating form question. Please try again later." })
             rescue Exception => ex
                 response_data[:error] = ex.message
+            end
+
+            return response_data
+        end
+
+        # DOCU: Method to fetch the form_question record dynamically
+        # Triggered by FormQuestion#create_form_question
+        # Requires: params - fields_to_filter
+        # Optionals: params - fields_to_select
+        # Returns: { status: true/false, result: {}, error }
+        # Last updated at: August 25, 2022
+        # Owner: Adrian
+        def self.get_form_question_record(params)
+            response_data = { :status => false, :result => {}, :error => nil }
+
+            begin
+                params["fields_to_select"] ||= "*"
+
+                get_form_question_query = ["
+                    SELECT #{ActiveRecord::Base.sanitize_sql(params["fields_to_select"])} FROM
+                    form_questions WHERE
+                "]
+
+                params[:fields_to_filter].each_with_index do |(field, value), index|
+                    get_form_question_query[0] += " #{'AND' if index > 0} #{field} #{field.is_a?(Array) ? 'IN(?)' : '=?'}"
+                    get_form_question_query    << value
+                end
+
+                form_question = query_record(get_form_question_query)
+
+                if form_question.present?
+                    response_data[:status] = true
+                    response_data[:result] = form_question
+                else
+                    response_data[:error] = "No form question record found, Please try again later."
+                end
+            rescue Exception => ex
+                response_data["error"] = ex.message
             end
 
             return response_data
