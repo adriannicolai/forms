@@ -10,14 +10,15 @@ Rails.application.routes.draw do
 
 	# DOCU: Route for forms
     # Triggered by: /user...
-    # Last updated at: July 16, 2022
+    # Last updated at: September 4, 2022
     # Owner: Adrian
 	scope "/forms" do
-		get  "/" 		   => "forms#home_page"
-		post "/get_form"   => "forms#get_form"
-		post "/create_form" => "forms#create_form"
-		get  "/view" 	   => "forms#view_form"
-		post "/delete_form" => "forms#delete_form"
+		get  "/" 		   		=> "forms#home_page"
+		post "/get_form"   		=> "forms#get_form"
+		post "/create_form" 	=> "forms#create_form"
+		get  "/view" 	   		=> "forms#view_form"
+		post "/delete_form" 	=> "forms#delete_form"
+		post "/create_question" => "forms#create_question"
 	end
 
 	# root logout
