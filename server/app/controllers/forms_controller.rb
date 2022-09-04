@@ -81,13 +81,31 @@ class FormsController < ApplicationController
 		render :json => response_data
 	end
 
+	# DOCU: This will handle the creation of new forms question
+    # Triggered by: (POST) /forms/create_question
+	# Requires params - form_id, form_section_id
+    # Returns: { status: true/false, result: { question_details, question html }, error }
+    # Last updated at: September 4, 2022
+    # Owner: Adrian
 	def create_question
 		response_data = { :status => false, :result => {}, :error => nil }
 
 		begin
-			create_queustion = FormQuestion.create_form_question
+			# Create a new form question
+			create_form_question = FormQuestion.create_form_question({
+				"question_type_id" => QUESTION_SETTINGS[:question_type][:paragraph],
+				"form_id"          => decrypt(params[:form_id]),
+				"form_section_id"  => params[:form_section_id]
+			})
+			
+			#TODO: Add the rendering of partial here for appending form question
+
+			# Merge the response data
+			response_data.merge!(create_form_question)
+
+			raise create_form_question[:error] if !create_form_question[:status]
 		rescue Exception => ex
-			response_data[:error] = ex.message
+			redirect_to_500
 		end
 
 		render :json => response_data
