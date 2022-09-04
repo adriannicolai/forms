@@ -14,10 +14,10 @@ Rails.application.routes.draw do
     # Owner: Adrian
 	scope "/forms" do
 		get  "/" 		   => "forms#home_page"
-		post "get_form"   => "forms#get_form"
-		post "create_form" => "forms#create_form"
+		post "/get_form"   => "forms#get_form"
+		post "/create_form" => "forms#create_form"
 		get  "/view" 	   => "forms#view_form"
-		post "delete_form" => "forms#delete_form"
+		post "/delete_form" => "forms#delete_form"
 	end
 
 	# root logout
