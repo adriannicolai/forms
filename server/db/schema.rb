@@ -11,7 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2022_07_31_011912) do
-  create_table "form_questions", charset: "utf8", force: :cascade do |t|
+  create_table "form_questions", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "form_id", null: false
     t.bigint "form_section_id"
     t.integer "question_type_id", limit: 2
@@ -24,7 +24,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_31_011912) do
     t.index ["form_section_id"], name: "index_form_questions_on_form_section_id"
   end
 
-  create_table "form_responses", charset: "utf8", force: :cascade do |t|
+  create_table "form_responses", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "form_id", null: false
     t.bigint "form_question_id", null: false
@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_31_011912) do
     t.index ["user_id"], name: "index_form_responses_on_user_id"
   end
 
-  create_table "form_sections", charset: "utf8", force: :cascade do |t|
+  create_table "form_sections", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "form_id", null: false
     t.text "form_question_ids"
     t.datetime "created_at", null: false
@@ -44,7 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_31_011912) do
     t.index ["form_id"], name: "index_form_sections_on_form_id"
   end
 
-  create_table "forms", charset: "utf8", force: :cascade do |t|
+  create_table "forms", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", limit: 150
     t.string "description", limit: 500
@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_31_011912) do
     t.index ["user_id"], name: "index_forms_on_user_id"
   end
 
-  create_table "users", charset: "utf8", force: :cascade do |t|
+  create_table "users", charset: "utf8mb3", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "email"
