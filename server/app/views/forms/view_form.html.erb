@@ -11,15 +11,15 @@
 
 		<div class="form_section">
 			<div class="form_title_area">
-				<input type="text" placeholder="Untitled Form" />
-				<input type="description" placeholder="Description" />
+				<input type="text" value="" placeholder="Untitled Form" />
+				<input type="description" value="" placeholder="Description" />
 			</div>
 		</div>
 
 		<%# Iterate the form sections %>
-		<% @form[:result].each do |key, form| %>
+		<% @form[:result][:form_questions].each do |key, form| %>
 			<div class="form_section" id="form_section_<%= key %>" data-section_id="<%= key %>">
-			<% @form[:result][key].each do |form_question| %>
+			<% @form[:result][:form_questions][key].each do |form_question| %>
 				<%= render :partial => get_form_question_partial_name(form_question["question_type_id"]), :locals => {:form_question => form_question} %>
 			<% end %>
 				<button class="add_question_trigger">Add question</button>
