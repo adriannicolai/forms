@@ -25,10 +25,11 @@
 				<button class="add_question_trigger">Add question</button>
 			</div>
 		<% end %>
-
+	<%# TODO: Hide for now
 		<div class="form_section">
 			<button id="add_section_trigger">Add section</button>
 		</div>
+	 %>
 
     </section>
 
@@ -37,9 +38,10 @@
 		<input type="hidden" name="update_type" />
 		<input type="hidden" name="">
 	</form>
-	<h1><%= params %></h1>
+
 	<form action="/forms/create_question" class="hidden" id="create_question_form" method="POST">
 		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
 		<input type="hidden" name="form_id" value="<%= params["id"] %>">
+		<input type="hidden" name="form_section_id" id="form_section_id">
 	</form>
 </div>
