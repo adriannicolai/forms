@@ -5,7 +5,7 @@
     <section class="content_section">
 		<div class="forms_navigation">
 			<p>Questions</p>
-			<p>Responsehahaa</p>
+			<p>Response</p>
 			<p>Settings</p>
 		</div>
 
@@ -18,7 +18,7 @@
 
 		<%# Iterate the form sections %>
 		<% @form[:result].each do |key, form| %>
-			<div class="form_section" data-section_id="<%= key %>">
+			<div class="form_section" id="form_section_<%= key %>" data-section_id="<%= key %>">
 			<% @form[:result][key].each do |form_question| %>
 				<%= render :partial => get_form_question_partial_name(form_question["question_type_id"]), :locals => {:form_question => form_question} %>
 			<% end %>
