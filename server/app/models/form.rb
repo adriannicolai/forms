@@ -51,8 +51,8 @@ class Form < ApplicationRecord
     # DOCU: Method to get all form details with sections and questions
     # Triggered by FormsController#view_form
 	# Requires: params - form_id
-    # Returns: { status: true/false, result: form_details, error }
-    # Last updated at: August 20, 2022
+    # Returns: { status: true/false, result: {form_questions, title, description}, error }
+    # Last updated at: September 23, 2022
     # Owner: Adrian
     def self.get_form_details(params)
         response_data = { :status => false, :result => {}, :error => nil }
@@ -62,7 +62,8 @@ class Form < ApplicationRecord
                 "SELECT
                     JSON_OBJECTAGG(
                         form_section_id, form_question_details
-                    ) AS form_questions
+                    ) AS form_questions,
+                    title, description
                 FROM
                 (
                     SELECT
@@ -75,16 +76,24 @@ class Form < ApplicationRecord
                                 'is_required_question', form_questions.is_required,
                                 'question_type_id', question_type_id
                             )) AS form_question_details,
-                            form_sections.id AS form_section_id
+                            form_sections.id AS form_section_id,
+                            forms.title as title,
+                            forms.description as description
                         FROM form_sections
                         INNER JOIN form_questions ON form_questions.form_section_id = form_sections.id
+                        INNER JOIN forms ON forms.id = form_sections.form_id
                         WHERE form_sections.form_id = ?
                         GROUP BY form_sections.id
-                ) AS form_details", params[:form_id] ])
+                ) AS form_details
+                GROUP BY title, description", params[:form_id] ])
 
             if form_details["form_questions"].present?
                 response_data[:status] = true
-                response_data[:result] = JSON.parse(form_details["form_questions"])
+                response_data[:result] = {
+                    :form_questions => JSON.parse(form_details["form_questions"]),
+                    :title          => form_details["title"],
+                    :description    => form_details["description"]
+                }
             else
                 raise "Cannot find form details."
             end
