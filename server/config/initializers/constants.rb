@@ -40,3 +40,9 @@ BOOLEAN_FIELD = {
     yes: 1,
     no:  0
 }
+
+# Form update type - see constants.js
+FORM_UPDATE_TYPE = {
+    title: "form_title",
+    description: "form_description",
+}
