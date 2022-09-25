@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $(document)
         .on("click", ".add_question_trigger", triggerAddQuestion)
+        .on("change", "#form_title", triggerUpdateFormDetails);
 });
 
 /**
@@ -19,4 +20,24 @@ function triggerAddQuestion(){
 
     /* Trigger the submit event of add question */
     create_question_form.submit();
+}
+
+/**
+* DOCU: This function is for tiggering the update form_details form<br>
+* Triggered: .on("change", "#form_title", triggerUpdateFormDetails);<br>
+* Last Updated Date: September 23, 2022
+* @author Adrian
+*/
+function triggerUpdateFormDetails(){
+    let update_form_details_form = $("#update_form");
+
+    let form_detail_update_type  = $(this);
+
+    /* Add data needed by the backend and submit the form */
+    if(form_detail_update_type.attr("id") === FORM_DETAILS.title){
+        update_form_details_form.children(".update_type").val(FORM_DETAILS.title);
+    }
+    else if(form_detail_update_type.attr("id") === FORM_DETAILS.description){
+        update_form_details_form.children(".update_type").val(FORM_DETAILS.description);
+    }
 }
