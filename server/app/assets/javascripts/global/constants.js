@@ -4,6 +4,7 @@ var BOOLEAN_FIELD = {
     no: 0,
 };
 
+/* Constants for form details */
 var FORM_DETAILS = {
     title: "form_title",
     description: "form_description",
