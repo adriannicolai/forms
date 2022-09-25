@@ -11,8 +11,8 @@
 
 		<div class="form_section">
 			<div class="form_title_area">
-				<input type="text" value="<%= @form[:result][:title] %>" placeholder="Untitled Form" />
-				<input type="description" value="<%= @form[:result][:description] %>" placeholder="Description" />
+				<input type="text" value="<%= @form[:result][:title] %>" placeholder="Untitled Form" id="form_title" />
+				<input type="description" value="<%= @form[:result][:description] %>" placeholder="Description" id="form_description" />
 			</div>
 		</div>
 
@@ -25,18 +25,20 @@
 				<button class="add_question_trigger">Add question</button>
 			</div>
 		<% end %>
+
 	<%# TODO: Hide for now
 		<div class="form_section">
 			<button id="add_section_trigger">Add section</button>
 		</div>
-	 %>
+	%>
 
     </section>
 
 	<form action="/forms/update_form" class="hidden" id="update_form" method="POST">
 		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-		<input type="hidden" name="update_type" />
-		<input type="hidden" name="">
+		<input type="hidden" name="update_type" class="update_type" />
+		<input type="hidden" name="title" class="title" />
+		<input type="hidden" name="description" class="description" />
 	</form>
 
 	<form action="/forms/create_question" class="hidden" id="create_question_form" method="POST">
