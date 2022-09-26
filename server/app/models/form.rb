@@ -261,6 +261,33 @@ class Form < ApplicationRecord
             return page_order
         end
 
+        # DOCU: Method to update form details dynamically
+        # Triggered by Forms
+        # Returns: { status: true/false, result: { form_details }, error }
+        # Last updated at: Septemebr 26, 2022
+        # Owner: Adrian
+        def self.update_form_record(params)
+            response_data = { :status => false, :result => {}, :error => nil }
+
+            begin
+                update_form_record_query = ["
+                    UPDATE forms SET #{params[:fields_to_update].map{ |field, value| "#{field}= '#{ActiveRecord::BBase.sanitize_sql(value)}'" }.join(",")}
+                    WHERE
+                "]
+
+                params[:fields_to_filter].each_with_index do |(field, value), index|
+                    update_form_record_query[0] += " #{'AND' if index > 0} #{field} #{field.is_a?(Array) ? 'IN(?)' : '?'}"
+                    update_form_record_query    << value
+                end
+
+                response_data.merge!(update_record(update_form_record_query).present? ? { :status => true } : { :error => "Error in updating form record, please try again later" })
+            rescue Exception => ex
+                response_data[:error] = ex.message
+            end
+
+            return response_data
+        end
+
         # DOCU: Method to set the query settings for join statements
         # Triggered by Forms
         # Returns: { status: true/false, result: { query_settings }, error }
