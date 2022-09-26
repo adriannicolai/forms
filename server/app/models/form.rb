@@ -172,6 +172,35 @@ class Form < ApplicationRecord
         return response_data
     end
 
+    # DOCU: Method to update the form details depending on the update type
+    # Triggered by:
+	# Requires: params - update_type
+    # Optionals: params - title, description
+    # Returns: { status: true/false, result, error }
+    # Last updated at: September 26, 2022
+    # Owner: Adrian
+    def self.update_form(params)
+        response_data = { :status => false, :result => {}, :error => nil }
+
+        begin
+            # Guard clause for missing update type
+            raise "Invalid action" if !params[:update_type].present?
+
+            # Update the from depending on the update type
+            response_data = case params[:update_type]
+            when FORM_UPDATE_TYPE[:form_title]
+            when FORM_UPDATE_TYPE[:form_description]
+            else
+                return response_data.merge({ :error => "Invalid action" })
+            end
+
+        rescue Exception => ex
+            response_data[:error] = ex.message
+        end
+
+        return response_data
+    end
+
     private
         # DOCU: Method to fetch a single form record
         # Triggered by Forms
