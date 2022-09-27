@@ -142,6 +142,27 @@ class FormsController < ApplicationController
 		render :json => response_data
 	end
 
+	# DOCU: This will Update the form
+    # Triggered by: (POST) /forms/delete_form
+	# Session - user_id
+    # Returns: { status: true/false, result, error }
+    # Last updated at: July 31, 2022
+    # Owner: Adrian
+	def update_form
+		response_data = { :status => false, :result => {}, :error => nil }
+
+		begin
+			# Guard clause for update type
+			raise "Missing required fields" if !params[:update_type].present?
+
+			response_data.merge!(Form.update_form(params.merge!({ "user_id" => session[:user_id] })))
+		rescue Exception => ex
+			response_data[:error] = ex.message
+		end
+
+		render :json => response_data
+	end
+
 	private
 		# DOCU: Redirects the user to the landing page if there is no session
 		# Triggered by before_action

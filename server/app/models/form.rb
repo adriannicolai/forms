@@ -52,7 +52,7 @@ class Form < ApplicationRecord
     # Triggered by FormsController#view_form
 	# Requires: params - form_id
     # Returns: { status: true/false, result: {form_questions, title, description}, error }
-    # Last updated at: September 23, 2022
+    # Last updated at: September 27, 2022
     # Owner: Adrian
     def self.get_form_details(params)
         response_data = { :status => false, :result => {}, :error => nil }
@@ -63,7 +63,7 @@ class Form < ApplicationRecord
                     JSON_OBJECTAGG(
                         form_section_id, form_question_details
                     ) AS form_questions,
-                    title, description
+                    title, description, form_id
                 FROM
                 (
                     SELECT
@@ -77,22 +77,24 @@ class Form < ApplicationRecord
                                 'question_type_id', question_type_id
                             )) AS form_question_details,
                             form_sections.id AS form_section_id,
-                            forms.title as title,
-                            forms.description as description
+                            forms.title AS title,
+                            forms.description AS description,
+                            forms.id AS form_id
                         FROM form_sections
                         INNER JOIN form_questions ON form_questions.form_section_id = form_sections.id
                         INNER JOIN forms ON forms.id = form_sections.form_id
                         WHERE form_sections.form_id = ?
                         GROUP BY form_sections.id
                 ) AS form_details
-                GROUP BY title, description", params[:form_id] ])
+                GROUP BY title, description, form_id", params[:form_id] ])
 
             if form_details["form_questions"].present?
                 response_data[:status] = true
                 response_data[:result] = {
                     :form_questions => JSON.parse(form_details["form_questions"]),
                     :title          => form_details["title"],
-                    :description    => form_details["description"]
+                    :description    => form_details["description"],
+                    :form_id        => form_details["form_id"]
                 }
             else
                 raise "Cannot find form details."
@@ -172,6 +174,36 @@ class Form < ApplicationRecord
         return response_data
     end
 
+    # DOCU: Method to update the form details depending on the update type
+    # Triggered by:
+	# Requires: params - update_type
+    # Optionals: params - title, description
+    # Returns: { status: true/false, result, error }
+    # Last updated at: September 26, 2022
+    # Owner: Adrian
+    def self.update_form(params)
+        response_data = { :status => false, :result => {}, :error => nil }
+
+        begin
+            # Guard clause for missing update type
+            raise "Invalid action" if !params[:update_type].present?
+
+            # Update the from depending on the update type
+            case params["update_type"]
+            when FORM_UPDATE_TYPE[:title]
+                response_data.merge!(self.update_form_title(params))
+            when FORM_UPDATE_TYPE[:description]
+            else
+                return response_data.merge({ :error => "Invalid action" })
+            end
+
+        rescue Exception => ex
+            response_data[:error] = ex.message
+        end
+
+        return response_data
+    end
+
     private
         # DOCU: Method to fetch a single form record
         # Triggered by Forms
@@ -237,6 +269,50 @@ class Form < ApplicationRecord
             return response_data
         end
 
+        # DOCU: Method to update the form title
+        # Triggered by: Forms
+        # Requires: params - user_id, form_id, title
+        # Returns: { status: true/false, result: { form_details }, error }
+        # Last updated at: September 27, 2022
+        # Owner: Adrian
+        def self.update_form_title(params)
+            response_data = { :status => false, :result => {}, :error => nil }
+
+            begin
+                # Check fields for updating form title
+                check_update_form_title_params = check_fields(["title", "form_id", "user_id"], [], params)
+
+                # Guard clause for missing fields
+                raise check_update_form_title_params[:error] if !check_update_form_title_params[:status]
+
+                # Destructure check_update_form_title_params
+                user_id, form_id, title = check_update_form_title_params[:result].values_at(:user_id, :form_id, :title)
+
+                # Check form record if exising
+                form_record = self.get_form_record({ :fields_to_filter => { :id => decrypt(form_id), :user_id => user_id }})
+
+                if form_record[:status]
+                    # Update the form record
+                    update_form_record = self.update_form_record({
+                        :fields_to_update => { :title => title },
+                        :fields_to_filter => { :id => decrypt(form_id), :user_id => user_id }
+                    })
+
+                    if update_form_record[:status]
+                        response_data[:status] = true
+                        response_data[:result] = form_record[:result].merge!({ "title" => title })
+                    else
+                        response_data[:error]  = "Error in updating form title, Please try again later."
+                    end
+                else
+                    response_data[:error] = "Error in updating form title, Please try again later."
+                end
+            rescue Exception => ex
+                response_data[:error] = ex.message
+            end
+
+            return response_data
+        end
         # DOCU: Method to set the query settings for order by
         # Triggered by Forms
         # Returns: { status: true/false, result: { query_settings }, error }
@@ -259,6 +335,33 @@ class Form < ApplicationRecord
                 end
 
             return page_order
+        end
+
+        # DOCU: Method to update form details dynamically
+        # Triggered by Forms
+        # Returns: { status: true/false, result: { form_details }, error }
+        # Last updated at: Septemebr 26, 2022
+        # Owner: Adrian
+        def self.update_form_record(params)
+            response_data = { :status => false, :result => {}, :error => nil }
+
+            begin
+                update_form_record_query = ["
+                    UPDATE forms SET #{params[:fields_to_update].map{ |field, value| "#{field}= '#{ActiveRecord::Base.sanitize_sql(value)}'" }.join(",")}
+                    WHERE
+                "]
+
+                params[:fields_to_filter].each_with_index do |(field, value), index|
+                    update_form_record_query[0] += " #{'AND' if index > 0} #{field} #{field.is_a?(Array) ? 'IN(?)' : '=?'}"
+                    update_form_record_query    << value
+                end
+
+                response_data.merge!(update_record(update_form_record_query).present? ? { :status => true } : { :error => "Error in updating form record, please try again later" })
+            rescue Exception => ex
+                response_data[:error] = ex.message
+            end
+
+            return response_data
         end
 
         # DOCU: Method to set the query settings for join statements
