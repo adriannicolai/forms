@@ -300,7 +300,7 @@ class Form < ApplicationRecord
 
                     if update_form_record[:status]
                         response_data[:status] = true
-                        response_data[:result] = form_record[:result].merge!({ "title" => title })
+                        response_data[:result] = { :title => title }
                     else
                         response_data[:error]  = "Error in updating form title, Please try again later."
                     end
