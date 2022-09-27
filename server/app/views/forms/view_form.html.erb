@@ -38,7 +38,7 @@
 		<input type="hidden" name="update_type" class="update_type" />
 		<input type="hidden" name="title" class="title" />
 		<input type="hidden" name="description" class="description" />
-		<input type="hidden" name="form-id" class="form_id" value="<%= encrypt(@form[:result][:form_id]) %>" />
+		<input type="hidden" name="form_id" class="form_id" value="<%= encrypt(@form[:result][:form_id]) %>" />
 	</form>
 
 	<form action="/forms/create_question" class="hidden" id="create_question_form" method="POST">
