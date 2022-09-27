@@ -33,17 +33,17 @@
 	%>
 
     </section>
-
 	<form action="/forms/update_form" class="hidden" id="update_form" method="POST">
 		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
 		<input type="hidden" name="update_type" class="update_type" />
 		<input type="hidden" name="title" class="title" />
 		<input type="hidden" name="description" class="description" />
+		<input type="hidden" name="form-id" class="form_id" value="<%= encrypt(@form[:result][:form_id]) %>" />
 	</form>
 
 	<form action="/forms/create_question" class="hidden" id="create_question_form" method="POST">
 		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
 		<input type="hidden" name="form_id" value="<%= params["id"] %>">
-		<input type="hidden" name="form_section_id" id="form_section_id">
+		<input type="hidden" name="form_section_id" value="<%= encrypt(@form[:result][:form_id]) %>" />
 	</form>
 </div>
