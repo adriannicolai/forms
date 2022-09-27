@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $(document)
         .on("submit", "#create_question_form", submitCreateQuestionForm)       /* This function will handle the submission of create question via ajax */
+        .on("submit", "#update_form", submitUpdateForm)
 });
 
 /**
@@ -27,5 +28,26 @@ function submitCreateQuestionForm(e){
             alert(create_question_response.error);
         }
     });
+}
 
+/**
+* DOCU: This function is for updating the form details for form title ir form description<br>
+* Triggered: .on("submit", "#create_question_form", submitCreateQuestionForm)<br>
+* Last Updated Date: September 27, 2022
+* @author Adrian
+*/
+function submitUpdateForm(e){
+    e.preventDefault();
+
+    let submit_form = $("#update_form");
+
+    $.post(submit_form.attr("action"), submit_form.serialize(), function(update_form_details_response){
+        if(update_form_details_response.status){
+            $("#form_title").val(update_form_details_response.result.title);
+        }
+        else{
+            /* TODO: update error handling */
+            alert(update_form_details_response.error);
+        }
+    });
 }
