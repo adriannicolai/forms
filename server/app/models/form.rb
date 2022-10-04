@@ -193,6 +193,7 @@ class Form < ApplicationRecord
             when FORM_UPDATE_TYPE[:title]
                 response_data.merge!(self.update_form_title(params))
             when FORM_UPDATE_TYPE[:description]
+                response_data.merge!(self.update_form_description(params))
             else
                 return response_data.merge({ :error => "Invalid action" })
             end
@@ -300,12 +301,56 @@ class Form < ApplicationRecord
 
                     if update_form_record[:status]
                         response_data[:status] = true
-                        response_data[:result] = form_record[:result].merge!({ "title" => title })
+                        response_data[:result] = { :title => title }
                     else
                         response_data[:error]  = "Error in updating form title, Please try again later."
                     end
                 else
                     response_data[:error] = "Error in updating form title, Please try again later."
+                end
+            rescue Exception => ex
+                response_data[:error] = ex.message
+            end
+
+            return response_data
+        end
+
+        # DOCU: Method to update the form description
+        # Triggered by: Forms
+        # Requires: params - user_id, form_id, title
+        # Returns: { status: true/false, result: { form_details }, error }
+        # Last updated at: October 4, 2022
+        # Owner: Adrian
+        def self.update_form_description(params)
+            response_data = { :status => false, :result => {}, :error => nil }
+
+            begin
+                # Check fields for updating form description
+                check_update_form_description_params = check_fields(["description", "form_id", "user_id"], [], params)
+
+                # Guard clause for updating form description error
+                raise check_update_form_description_params[:error] if !check_update_form_description_params[:status]
+
+                form_id, user_id, description = check_update_form_description_params[:result].values_at(:form_id, :user_id, :description)
+
+                # Check form record if exising
+                form_record = self.get_form_record({ :fields_to_filter => { :id => decrypt(form_id), :user_id => user_id }})
+
+                if form_record[:status]
+                    # Update the form record
+                    update_form_record = update_form_record({
+                        :fields_to_update => { :description => description },
+                        :fields_to_filter => { :id => decrypt(form_id), :user_id => user_id }
+                    })
+
+                    if update_form_record[:status]
+                        response_data[:status] = true
+                        response_data[:result] = { :description => description }
+                    else
+                        response_data[:error]  = "Error in updating form title, Please try again later."
+                    end
+                else
+                    response_data[:error] = "Error in updating form record. Please try again later"
                 end
             rescue Exception => ex
                 response_data[:error] = ex.message

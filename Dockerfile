@@ -1,3 +1,5 @@
+# docker build --tag forms_clone .
+# docker run -p 3000:3000 forms_clone
 FROM ruby:3.1.1-alpine
 RUN apk add --update --virtual \
     runtime-deps \
@@ -7,6 +9,7 @@ RUN apk add --update --virtual \
     libxslt-dev \
     nodejs \
     yarn \
+    libffi-dev \
     readline \
     libc-dev \
     linux-headers \
@@ -14,6 +17,7 @@ RUN apk add --update --virtual \
     file \
     git \
     tzdata \
+    sqlite-dev \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /server
