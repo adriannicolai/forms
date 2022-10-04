@@ -50,7 +50,7 @@ module UsersHelper
     end
 
     # DOCU: Set user session
-    # Triggered by: UusersController
+    # Triggered by: UsersController
     # Requires: user_data - id, first_name, last_name, email
     # Returns: { status, result{params}, error }
     # Last updated at: July 16, 2022
