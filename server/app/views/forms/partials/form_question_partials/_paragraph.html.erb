@@ -3,10 +3,10 @@
     <div class="form_question_settings">
         <input type="text" name="question" placeholder="Unntitled question" class="form_question_title" value="<%= form_question["question_title"] %>" />
 
-        <select class="form-select" class="form_question_type">
-            <option>Multiple Choice</option>
-            <option selected>Paragraph</option>
-            <%# TODO: comment out for not
+        <select class="form-select form_question_type">
+            <option value="<%= QUESTION_SETTINGS[:question_type][:multiple_choice] %>">Multiple Choice</option>
+            <option value="<%= QUESTION_SETTINGS[:question_type][:paragraph] %>" selected> Paragraph</option>
+            <%# TODO: comment out for now
             <option>Checkbox</option>
             <option>Dropdown</option> %>
         </select>

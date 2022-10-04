@@ -3,9 +3,9 @@
     <div class="form_question_settings">
         <input type="text" name="question" placeholder="Unntitled question" class="form_question_title" value="<%= form_question["question_title"] %>" />
 
-        <select class="form-select" class="form_question_type">
-            <option selected>Multiple Choice</option>
-            <option>Paragraph</option>
+        <select class="form-select form_question_type">
+            <option value="<%= QUESTION_SETTINGS[:question_type][:multiple_choice] %>" selected>Multiple Choice</option>
+            <option value="<%= QUESTION_SETTINGS[:question_type][:paragraph] %>"> Paragraph</option>
             <%# TODO: comment out for now
              <option>Checkbox</option>
             <option>Dropdown</option> %>
