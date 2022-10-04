@@ -1,7 +1,8 @@
 $(document).ready(function () {
     $(document)
         .on("click", ".add_question_trigger", triggerAddQuestion)           /* Function to trigger the adding of a question to a form */
-        .on("change", "#form_title", triggerUpdateFormDetails);             /* Function to trtigger the updating of form details */
+        .on("change", "#form_title", triggerUpdateFormDetails)              /* Function to trtigger the updating of form details */
+        .on("change", "#form_description", triggerUpdateFormDetails);       /* Function to trigger the updating of form description */
 });
 
 /**
