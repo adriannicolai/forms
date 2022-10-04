@@ -25,8 +25,8 @@ function triggerAddQuestion(){
 
 /**
 * DOCU: This function is for tiggering the update form_details form<br>
-* Triggered: .on("change", "#form_title", triggerUpdateFormDetails);<br>
-* Last Updated Date: September 27, 2022
+* Triggered: .on("change", "#form_title", triggerUpdateFormDetails), .on("change", "#form_description", triggerUpdateFormDetails);<br>
+* Last Updated Date: October 4, 2022
 * @author Adrian
 */
 function triggerUpdateFormDetails(){
@@ -43,6 +43,8 @@ function triggerUpdateFormDetails(){
     }
     else if(form_update_input.attr("id") === FORM_DETAILS.description){
         update_form_details_form.children(".update_type").val(FORM_DETAILS.description);
+
+        update_form_details_form.children(".description").val(form_update_input.val());
     }
 
     update_form_details_form.submit();
