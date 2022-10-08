@@ -1,0 +1,7 @@
+<% if options.present? && options.is_a?(Array) %>
+<div class="option_list">
+    <% options.each do |option| %>
+    <input type="text" name="options[]" placeholder="Option" class="options" value="<% option %>" />
+    <% end %>
+</div>
+<% end %>
