@@ -2,6 +2,7 @@ $(document).ready(function() {
     $(document)
         .on("submit", "#create_question_form", submitCreateQuestionForm)       /* This function will handle the submission of create question via ajax */
         .on("submit", "#update_form", submitUpdateForm)
+        .on("submit", "#update_form_question_form", submitUpdateQuestionForm);
 });
 
 /**
@@ -33,7 +34,7 @@ function submitCreateQuestionForm(e){
 /**
 * DOCU: This function is for updating the form details for form title ir form description<br>
 * Triggered: .on("submit", "#create_question_form", submitCreateQuestionForm)<br>
-* Last Updated Date: September 27, 2022
+* Last Updated Date: October 8, 2022
 * @author Adrian
 */
 function submitUpdateForm(e){
@@ -43,11 +44,24 @@ function submitUpdateForm(e){
 
     $.post(submit_form.attr("action"), submit_form.serialize(), function(update_form_details_response){
         if(update_form_details_response.status){
-            $("#form_title").val(update_form_details_response.result.title);
+            /* Update the form  title */
+            update_form_details_response.result.title && $("#form_title").val(update_form_details_response.result.title);
+
+            /* Update the form description */
+            update_form_details_response.result.description && $("#form_description").val(update_form_details_response.result.description);
         }
         else{
             /* TODO: update error handling */
             alert(update_form_details_response.error);
         }
+    });
+}
+
+function submitUpdateQuestionForm(e){
+    e.preventDefault();
+
+    let update_form_question_form = $("#update_form_question_form");
+
+    $.post(update_form_question_form.attr("action"), update_form_question_form.serialize(), function(update_question_form_response){
     });
 }

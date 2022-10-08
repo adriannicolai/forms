@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
 	scope "form_questions" do
 		post "/create_form_question" => "form_questions#create_form_question"
-		post "update_form_question" => "form_questions#update_form_question"
+		post "/update_form_question" => "form_questions#update_form_question"
 	end
 
 	# root logout

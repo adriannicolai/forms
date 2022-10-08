@@ -2,7 +2,8 @@ $(document).ready(function () {
     $(document)
         .on("click", ".add_question_trigger", triggerAddQuestion)           /* Function to trigger the adding of a question to a form */
         .on("change", "#form_title", triggerUpdateFormDetails)              /* Function to trtigger the updating of form details */
-        .on("change", "#form_description", triggerUpdateFormDetails);       /* Function to trigger the updating of form description */
+        .on("change", "#form_description", triggerUpdateFormDetails)        /* Function to trigger the updating of form description */
+        .on("change", ".form_question_type", triggerUpdateFormQuestionType);/* Function to trigger the updating of form question update type */
 });
 
 /**
@@ -48,4 +49,21 @@ function triggerUpdateFormDetails(){
     }
 
     update_form_details_form.submit();
+}
+
+/**
+* DOCU: This function is for tiggering the update form question type form<br>
+* Triggered: .on("change", ".form_question_type", triggerUpdateFormQuestionType)<br>
+* Last Updated Date: October 8, 2022
+* @author Adrian
+*/
+function triggerUpdateFormQuestionType(){
+    let form_question_type_select = $(this);
+    let update_form_question_form = $("#update_form_question_form");
+    let form_question_id          = form_question_type_select.closest(".form_question_area").data("question_id");
+
+    /* Add the form question id */
+    update_form_question_form.children(".form_question_id").val(form_question_id);
+
+    update_form_question_form.submit();
 }
