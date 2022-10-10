@@ -4,8 +4,10 @@ Rails.application.routes.draw do
     # Last updated at: July 16, 2022
     # Owner: Adrian
 	scope "/user" do
-		post "/create_user" => "users#create_user"
-		post "login"		=> "users#login"
+		post "/create_user"    => "users#create_user"
+		post "/login"		   => "users#login"
+
+		get "/account_settings" => "users#account_settings"
 	end
 
 	# DOCU: Route for forms
